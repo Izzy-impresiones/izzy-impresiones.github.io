@@ -143,10 +143,11 @@ async function paginaCatalogo() {
   const productos = await cargarProductos();
   const params = new URLSearchParams(location.search);
   let cat = params.get("cat") || "todos";
+  if (cat === "dia-de-la-madre" && !diaMadreActivo()) cat = "todos";
   let orden = "sugerido", q = "";
 
   const chips = [["todos", "Todos"]];
-  if (productos.some(p => p.dia_de_la_madre)) chips.push(["dia-de-la-madre", "🎁 Día de la Madre"]);
+  if (diaMadreActivo() && productos.some(p => p.dia_de_la_madre)) chips.push(["dia-de-la-madre", "🎁 Día de la Madre"]);
   CATEGORIAS.filter(c => productos.some(p => p.categoria === c)).forEach(c => chips.push([c, c]));
   const cont = $("#chips");
   cont.innerHTML = chips.map(([v, l]) => `<button class="chip${v === "dia-de-la-madre" ? " mom-chip" : ""}" data-v="${esc(v)}">${esc(l)}</button>`).join("");
