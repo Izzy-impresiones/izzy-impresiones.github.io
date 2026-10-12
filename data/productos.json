@@ -700,5 +700,23 @@
     "dia_de_la_madre": false,
     "orden": 44,
     "vista_previa": true
+  },
+  {
+    "slug": "estuche-airpods-pro-2-spiderman",
+    "nombre": "Estuche AirPods Pro 2 Spider-Man",
+    "categoria": "Otros",
+    "precio": 6000,
+    "colores": [
+      "Rojo",
+      "Negro",
+      "Blanco"
+    ],
+    "imagenes": [
+      "img/productos/estuche-airpods-pro-2-spiderman-1.jpg",
+      "img/productos/estuche-airpods-pro-2-spiderman-2.jpg"
+    ],
+    "descripcion": "Estuche para AirPods Pro 2 con la cara de Spider-Man. Se coloca sobre el estuche de carga y se abre junto con la tapa.",
+    "dia_de_la_madre": false,
+    "orden": 45
   }
 ]
