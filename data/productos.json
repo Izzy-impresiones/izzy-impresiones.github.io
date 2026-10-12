@@ -675,5 +675,20 @@
     "descripcion": "Mantené tus esponjas ordenadas junto a la bacha. Sus compartimentos, base acanalada y salida frontal ayudan a escurrir el agua.",
     "dia_de_la_madre": false,
     "orden": 43
+  },
+  {
+    "slug": "gatito-soporte-para-celular",
+    "nombre": "Gatito soporte para celular",
+    "categoria": "Organización",
+    "precio": null,
+    "colores": "*",
+    "imagenes": [
+      "img/productos/gatito-soporte-para-celular-1.jpg",
+      "img/productos/gatito-soporte-para-celular-2.jpg",
+      "img/productos/gatito-soporte-para-celular-3.jpg"
+    ],
+    "descripcion": "Este gatito se pasa el día panza arriba sosteniendo tu celular 🐱\n\nEste soporte es ideal para el escritorio, la mesa de luz o para ver videos mientras comés.\n\nTenemos una gran variedad de colores disponibles.",
+    "dia_de_la_madre": false,
+    "orden": 44
   }
 ]
