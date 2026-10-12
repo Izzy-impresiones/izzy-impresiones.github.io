@@ -173,7 +173,8 @@
     ],
     "descripcion": "Organizá tus lápices y lapiceras con este original lapicero con forma de mochila. Sus detalles de bolsillos y cierres le dan un toque divertido a tu escritorio.",
     "dia_de_la_madre": false,
-    "orden": 12
+    "orden": 12,
+    "vista_previa": true
   },
   {
     "slug": "llavero-corazon-geometrico",
@@ -186,7 +187,8 @@
     ],
     "descripcion": "Un corazón con trama geométrica para acompañar tus llaves o decorar tu mochila. Incluye argolla metálica y es un lindo detalle para regalar.",
     "dia_de_la_madre": false,
-    "orden": 13
+    "orden": 13,
+    "vista_previa": true
   },
   {
     "slug": "vincha-argentina",
@@ -251,7 +253,8 @@
     ],
     "descripcion": "Un accesorio práctico para llevar con tus llaves: ayuda a abrir botellas y levantar las anillas de las latas. Diseño compacto con argolla metálica.",
     "dia_de_la_madre": false,
-    "orden": 17
+    "orden": 17,
+    "vista_previa": true
   },
   {
     "slug": "expositor-de-perfumes",
@@ -269,7 +272,8 @@
     ],
     "descripcion": "Organizá y exhibí tus perfumes en este expositor escalonado de tres niveles. Su diseño permite tener los frascos a la vista y darle orden a tu espacio. Perfumes no incluidos.",
     "dia_de_la_madre": false,
-    "orden": 18
+    "orden": 18,
+    "vista_previa": true
   },
   {
     "slug": "organizador-de-controles",
@@ -287,7 +291,8 @@
     ],
     "descripcion": "Tené tus controles remotos ordenados y siempre a mano con este organizador de líneas simples. También disponible con 2 o 4 espacios.",
     "dia_de_la_madre": false,
-    "orden": 19
+    "orden": 19,
+    "vista_previa": true
   },
   {
     "slug": "portallaves-de-pared",
@@ -596,7 +601,8 @@
     ],
     "descripcion": "Dejá secar tu mate y tu bombilla en un solo lugar. Base con apoyo elevado y soporte lateral para mantener todo ordenado. Mate y bombilla no incluidos.",
     "dia_de_la_madre": false,
-    "orden": 37
+    "orden": 37,
+    "vista_previa": true
   },
   {
     "slug": "stand-qr-personalizable",
@@ -622,7 +628,8 @@
     ],
     "descripcion": "Deslizá las fichas y reuní cada color en su fila. Un juego de ingenio para resolver, mezclar y volver a empezar.",
     "dia_de_la_madre": false,
-    "orden": 39
+    "orden": 39,
+    "vista_previa": true
   },
   {
     "slug": "despolvillador-de-yerba",
@@ -661,7 +668,8 @@
     ],
     "descripcion": "Una maceta con sonrisa, manitos y pies para darle un toque divertido a tus plantas y decorar tu espacio.",
     "dia_de_la_madre": false,
-    "orden": 42
+    "orden": 42,
+    "vista_previa": true
   },
   {
     "slug": "escurridor-de-esponjas",
@@ -674,7 +682,8 @@
     ],
     "descripcion": "Mantené tus esponjas ordenadas junto a la bacha. Sus compartimentos, base acanalada y salida frontal ayudan a escurrir el agua.",
     "dia_de_la_madre": false,
-    "orden": 43
+    "orden": 43,
+    "vista_previa": true
   },
   {
     "slug": "gatito-soporte-para-celular",
@@ -689,6 +698,7 @@
     ],
     "descripcion": "Este gatito se pasa el día panza arriba sosteniendo tu celular 🐱\n\nEste soporte es ideal para el escritorio, la mesa de luz o para ver videos mientras comés.\n\nTenemos una gran variedad de colores disponibles.",
     "dia_de_la_madre": false,
-    "orden": 44
+    "orden": 44,
+    "vista_previa": true
   }
 ]

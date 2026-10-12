@@ -194,11 +194,26 @@ async function paginaProducto() {
 
   const cols = coloresDe(p);
   let color = cols[0] || null;
+  // Vista previa de color: solo en productos marcados con "vista_previa": true
+  const previa = p.vista_previa === true && cols.length > 1 && typeof window.vistaPreviaColor === "function";
+  let fotoActual = p.imagenes[0], colorPrevia = null, turno = 0;
+  const mostrarFoto = async () => {
+    const t = ++turno, img = $("#foto"), caja = main.querySelector(".previa");
+    if (!colorPrevia) { img.src = fotoActual; if (caja) caja.hidden = true; return; }
+    img.classList.add("pintando");
+    const url = await window.vistaPreviaColor(fotoActual, COLORES[colorPrevia], p.imagenes[0]);
+    if (t !== turno) return;
+    img.classList.remove("pintando");
+    img.src = url || fotoActual;
+    caja.hidden = !url;
+    if (url) $("#previa-txt").textContent = `Vista previa en ${colorPrevia}`;
+  };
   main.innerHTML = `<div class="container">
     <nav class="crumbs"><a href="index.html">Inicio</a><span>/</span><a href="catalogo.html">Catálogo</a><span>/</span>${esc(p.nombre)}</nav>
     <div class="detail">
       <div class="gallery">
-        <div class="main"><img id="foto" src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}"></div>
+        <div class="main"><img id="foto" src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}">
+          ${previa ? `<div class="previa" hidden><span id="previa-txt"></span><button type="button" id="previa-off">Ver foto original</button></div>` : ""}</div>
         ${p.imagenes.length > 1 ? `<div class="thumbs">${p.imagenes.map((u, i) =>
           `<button aria-label="Ver foto ${i + 1}" aria-pressed="${i === 0}" data-src="${esc(u)}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
       </div>
@@ -210,7 +225,7 @@ async function paginaProducto() {
         <div class="desc">${formatoDescripcion(p.descripcion)}</div>
         ${cols.length ? `<fieldset class="picker"><legend>Elegí tu color: <strong id="color-nombre">${esc(color)}</strong></legend>
           <div>${cols.map((c, i) => `<button style="background:${COLORES[c] || "#ccc"}" title="${esc(c)}" aria-label="${esc(c)}" aria-pressed="${i === 0}" data-c="${esc(c)}"></button>`).join("")}</div>
-          <small>Los tonos son orientativos y pueden variar según la pantalla y el material.</small></fieldset>` : ""}
+          ${previa ? `<small class="previa-tip">Tocá un color para ver cómo queda.</small>` : ""}<small>Los tonos son orientativos y pueden variar según la pantalla y el material.</small></fieldset>` : ""}
         <a id="wa-btn" class="btn wa" href="${waProducto(p, color)}" target="_blank" rel="noopener">${ICON.wa} Pedir por WhatsApp</a>
         <div class="notes"><span>Hecho con impresión 3D</span><span>Seña por transferencia</span><span>Entrega en Corrientes Capital</span></div>
       </div>
@@ -223,15 +238,18 @@ async function paginaProducto() {
   main.addEventListener("click", e => {
     const t = e.target.closest(".thumbs button");
     if (t) {
-      $("#foto").src = t.dataset.src;
+      fotoActual = t.dataset.src;
+      mostrarFoto();
       main.querySelectorAll(".thumbs button").forEach(b => b.setAttribute("aria-pressed", b === t));
     }
+    if (e.target.closest("#previa-off")) { colorPrevia = null; mostrarFoto(); }
     const c = e.target.closest(".picker button");
     if (c) {
       color = c.dataset.c;
       $("#color-nombre").textContent = color;
       main.querySelectorAll(".picker button").forEach(b => b.setAttribute("aria-pressed", b === c));
       $("#wa-btn").href = waProducto(p, color);
+      if (previa) { colorPrevia = color; mostrarFoto(); }
     }
   });
 }

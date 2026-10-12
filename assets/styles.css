@@ -214,3 +214,12 @@ section{padding:80px 0}
 .card .photo img,.gallery img,.thumbs img{color:transparent;font-size:0}
 #ultimos{grid-template-columns:repeat(3,1fr)}
 @media (max-width:900px){#ultimos{grid-template-columns:repeat(2,1fr)}}
+
+/* Vista previa de color */
+.gallery .main{position:relative}
+.gallery .main img{transition:opacity .2s}
+.gallery .main img.pintando{opacity:.55}
+.previa{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.92);border-radius:12px;padding:8px 12px;font-size:13px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.previa[hidden]{display:none}
+.previa button{border:0;background:none;font:inherit;font-weight:600;text-decoration:underline;cursor:pointer;color:var(--dark);padding:4px 0}
+.picker .previa-tip{color:var(--dark);font-weight:500}
