@@ -126,27 +126,15 @@ function formatoDescripcion(txt) {
 /* ===== Movimiento ===== */
 const sinMovimiento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Hero: las piezas se imprimen al cargar; al tocar, la pieza cambia de color
+// Hero: la impresora imprime la perrita al cargar
 function impresora() {
   const art = $("#impresora"); if (!art) return;
-  const estado = $("#impresora-estado"), arco = $(".perrita", art);
-  const paleta = ["Rosa claro", "Lila", "Salmón", "Celeste", "Amarillo", "Naranja", "Nova", "Esmeralda", "Rosa chicle", "Blanco", "Piel"];
-  let n = 0;
-  if (sinMovimiento()) estado.textContent = "Tocá y cambia de color";
+  const estado = $("#impresora-estado");
+  if (sinMovimiento()) estado.textContent = "Hecha capa a capa";
   else {
     art.classList.add("imprimiendo");
-    setTimeout(() => { art.classList.remove("imprimiendo"); art.classList.add("listo"); estado.textContent = "Tocá y cambia de color"; }, 3500);
+    setTimeout(() => { art.classList.remove("imprimiendo"); estado.textContent = "Hecha capa a capa"; }, 3500);
   }
-  const cambiar = () => {
-    if (art.classList.contains("imprimiendo")) return;
-    art.classList.remove("listo");
-    n = (n + 1) % paleta.length;
-    arco.style.setProperty("--pieza", COLORES[paleta[n]]);
-    estado.textContent = paleta[n];
-    if (!sinMovimiento()) { arco.classList.remove("reimprimir"); void arco.offsetWidth; arco.classList.add("reimprimir"); }
-  };
-  art.addEventListener("click", cambiar);
-  art.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cambiar(); } });
   // Celular: las piezas se mueven a distinta velocidad al hacer scroll
   if (!matchMedia("(hover: hover)").matches && !sinMovimiento()) {
     let pendiente = false;
@@ -238,14 +226,24 @@ function cuentaRegresiva() {
   if (pintar()) { const t = setInterval(() => { if (!pintar()) clearInterval(t); }, 30000); }
 }
 
-// Celular: las tarjetas con más de una foto las van alternando solas
-function alternarFotos() {
-  if (matchMedia("(hover: hover)").matches || sinMovimiento() || !("IntersectionObserver" in window)) return;
-  const visibles = new Set();
-  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)), { threshold: .6 });
-  document.querySelectorAll(".card .photo").forEach(ph => { if (ph.querySelector("img.alt")) io.observe(ph); });
-  let tic = 0;
-  setInterval(() => { tic++; visibles.forEach(ph => { if ((tic + ph.parentElement.style.getPropertyValue("--i") * 1) % 2 === 0) ph.classList.toggle("otra"); }); }, 1800);
+// Las tarjetas con más de una foto las van alternando solas (celu y compu)
+const fotos = { io: null, visibles: new Set(), tic: 0 };
+function alternarFotos(raiz = document) {
+  if (sinMovimiento() || !("IntersectionObserver" in window)) return;
+  if (!fotos.io) {
+    fotos.io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? fotos.visibles.add(e.target) : fotos.visibles.delete(e.target)), { threshold: .5 });
+    setInterval(() => {
+      fotos.tic++;
+      fotos.visibles.forEach(ph => {
+        if (!ph.isConnected) { fotos.visibles.delete(ph); return; }
+        if ((fotos.tic + +ph.dataset.n) % 2 === 0) ph.classList.toggle("otra");
+      });
+    }, 2200);
+  }
+  raiz.querySelectorAll(".card .photo").forEach((ph, i) => {
+    if (ph.dataset.n || !ph.querySelector("img.alt")) return;
+    ph.dataset.n = i; fotos.io.observe(ph);
+  });
 }
 
 // Las tarjetas entran escalonadas cuando aparecen en pantalla
@@ -308,6 +306,7 @@ async function paginaCatalogo() {
     $("#count").textContent = `${lista.length} producto${lista.length === 1 ? "" : "s"}`;
     $("#grid").innerHTML = lista.length ? lista.map((p, i) => tarjeta(p, i)).join("")
       : `<p class="empty">No encontramos productos. ¿Lo buscás personalizado? <a href="${waGeneral()}" target="_blank" rel="noopener">Escribinos</a>.</p>`;
+    alternarFotos($("#grid"));
   }
   cont.addEventListener("click", e => {
     const b = e.target.closest(".chip"); if (!b) return;
@@ -319,7 +318,6 @@ async function paginaCatalogo() {
   $("#sort").addEventListener("change", e => { orden = e.target.value; render(); });
   $("#search").addEventListener("input", e => { q = e.target.value.trim(); render(); });
   render();
-  alternarFotos();
 }
 
 async function paginaProducto() {
@@ -378,6 +376,7 @@ async function paginaProducto() {
       <div class="grid">${productos.filter(x => x.categoria === p.categoria && x.slug !== p.slug).slice(0, 4).map(tarjeta).join("")}</div>
     </section></div>`;
 
+  alternarFotos(main);
   main.addEventListener("click", e => {
     const t = e.target.closest(".thumbs button");
     if (t) {
