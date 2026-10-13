@@ -178,17 +178,29 @@ function impresora() {
 }
 
 // Sección de colores: tocá un color, el dragón cambia de color y escupe fuego
-async function probador() {
+function probador() {
   const cont = $("#swatches"), pieza = $("#probador"), nombre = $("#probador-nombre");
   const inicial = "Verde";
   const orden = [...COLORES_NUEVOS, ...TODOS_LOS_COLORES.filter(c => !COLORES_NUEVOS.includes(c))];
   cont.innerHTML = orden.map(c =>
     `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${COLORES[c]}"></i>${esc(c)}${COLORES_NUEVOS.includes(c) ? ` <em class="nuevo">Nuevo</em>` : ""}</button>`).join("");
   pieza.style.setProperty("--c", COLORES[inicial]);
-  try { pieza.innerHTML = await (await fetch("assets/dragon.svg")).text(); } catch (e) { return; }
-  const dragon = $(".dragon", pieza);
+  pieza.innerHTML = `<div class="dragon-foto">
+      <span class="tinte"></span>
+      <img src="img/dragon-colores.webp" alt="" width="724" height="802" loading="lazy">
+      <svg class="fuego" viewBox="0 0 200 80" aria-hidden="true">
+        <path class="llama l1" d="M200 40 C170 20 130 26 90 10 C100 30 70 36 50 30 C64 44 30 52 4 46 C30 64 70 66 100 60 C140 56 170 54 200 44 Z"/>
+        <path class="llama l2" d="M200 41 C176 30 150 34 120 26 C128 38 110 44 96 42 C112 52 150 54 200 44 Z"/>
+        <path class="llama l3" d="M200 42 C186 36 172 38 156 36 C160 42 152 46 146 46 C162 50 182 48 200 44 Z"/>
+        <circle class="chispa" cx="150" cy="34" r="2.6" style="--dx:-50px;--dy:-26px;--t:0s"/>
+        <circle class="chispa" cx="140" cy="46" r="2" style="--dx:-60px;--dy:14px;--t:.1s"/>
+        <circle class="chispa" cx="160" cy="40" r="2.2" style="--dx:-44px;--dy:-38px;--t:.2s"/>
+        <circle class="chispa" cx="130" cy="42" r="1.8" style="--dx:-70px;--dy:-6px;--t:.15s"/>
+      </svg>
+    </div>`;
+  const dragon = $(".dragon-foto", pieza);
   const fuego = () => {
-    if (sinMovimiento() || !dragon) return;
+    if (sinMovimiento()) return;
     dragon.classList.remove("escupe"); void dragon.getBoundingClientRect(); dragon.classList.add("escupe");
   };
   dragon.addEventListener("animationend", e => { if (e.animationName === "fuego-vis") dragon.classList.remove("escupe"); });

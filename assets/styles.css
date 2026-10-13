@@ -279,32 +279,26 @@ section{padding:80px 0}
 
 /* Probador de colores */
 .probador{display:grid;grid-template-columns:minmax(260px,440px) 1fr;gap:40px;align-items:center;margin-top:30px}
-.probador-pieza{--c:#5e7952;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;aspect-ratio:1;border-radius:var(--radius);background:linear-gradient(160deg,#eee6d9,#e4d8c5);overflow:hidden}
-.dragon{position:absolute;inset:2%;width:96%;height:96%;color:var(--c);overflow:visible;transition:color .5s}
-.dragon .contorno{fill:none;stroke:color-mix(in srgb,var(--c) 40%,#000);stroke-width:7.5;stroke-linejoin:round}
-.dragon .borde{fill:none;stroke:currentColor;stroke-width:5;stroke-linejoin:round}
-.dragon .hueco{fill:color-mix(in srgb,var(--c) 38%,#120f0c)}
-.dragon .hueso{fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round}
-.dragon .seg{stroke:color-mix(in srgb,var(--c) 50%,#000);stroke-width:1.2;stroke-linejoin:round}
-.dragon .det{fill:#1e1a17}
-.dragon .det-l{fill:none;stroke:color-mix(in srgb,var(--c) 45%,#000);stroke-width:1.4;stroke-linecap:round}
-.dragon .boca{fill:#3a1410}
-.dragon .diente{fill:none;stroke:#fffaf0;stroke-width:1.2}
-.dragon .respira{transform-box:fill-box;transform-origin:50% 100%;animation:respira 3.6s ease-in-out infinite}
-@keyframes respira{50%{transform:scale(1.006,1.012)}}
+.probador-pieza{--c:#5e7952;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;aspect-ratio:5/4;border-radius:var(--radius);background:linear-gradient(160deg,#eee6d9,#e4d8c5);overflow:hidden}
+/* Dragón de muestra: foto recortada que se pinta del color elegido */
+.dragon-foto{position:absolute;right:3%;bottom:3%;height:92%;aspect-ratio:724/802;isolation:isolate}
+.dragon-foto::after{content:"";position:absolute;left:8%;right:4%;bottom:-1%;height:7%;border-radius:50%;background:rgba(60,50,30,.16);z-index:-1;filter:blur(4px)}
+.dragon-foto .tinte,.dragon-foto img{position:absolute;inset:0;width:100%;height:100%}
+.dragon-foto .tinte{background:var(--c);-webkit-mask:url(../img/dragon-colores.webp) center/100% 100% no-repeat;mask:url(../img/dragon-colores.webp) center/100% 100% no-repeat;transition:background-color .5s}
+.dragon-foto img{mix-blend-mode:multiply}
 
-/* Fuego */
-.fuego{opacity:0;filter:drop-shadow(0 0 8px rgba(255,140,40,.85))}
-.fuego .llama{transform-box:fill-box;transform-origin:0% 50%}
+/* Fuego que sale de la boca, hacia la izquierda */
+.fuego{position:absolute;right:98.2%;top:24.6%;width:62%;translate:0 -50%;overflow:visible;opacity:0;filter:drop-shadow(0 0 8px rgba(255,140,40,.85));pointer-events:none}
+.fuego .llama{transform-box:fill-box;transform-origin:100% 50%}
 .fuego .l1{fill:#e2522a}.fuego .l2{fill:#f39a2b}.fuego .l3{fill:#ffe27a}
 .fuego .chispa{fill:#ffcf5a;transform-box:fill-box;opacity:0}
-.dragon.escupe .fuego{animation:fuego-vis 1.5s ease-out}
-.dragon.escupe .l1{animation:llama 1.5s ease-out}
-.dragon.escupe .l2{animation:llama 1.5s ease-out .05s}
-.dragon.escupe .l3{animation:llama 1.5s ease-out .1s}
-.dragon.escupe .chispa{animation:chispa .9s ease-out calc(.25s + var(--t)) 2}
+.escupe .fuego{animation:fuego-vis 1.5s ease-out}
+.escupe .l1{animation:llama 1.5s ease-out}
+.escupe .l2{animation:llama 1.5s ease-out .05s}
+.escupe .l3{animation:llama 1.5s ease-out .1s}
+.escupe .chispa{animation:chispa .9s ease-out calc(.25s + var(--t)) 2}
 @keyframes fuego-vis{0%{opacity:0}6%{opacity:1}72%{opacity:1}100%{opacity:0}}
-@keyframes llama{0%{transform:scale(.05,.3)}16%{transform:scale(1.35,1.7)}30%{transform:scale(1.15,1.4)}46%{transform:scale(1.45,1.85)}62%{transform:scale(1.2,1.5)}80%{transform:scale(1.4,1.6)}100%{transform:scale(1.6,.6)}}
+@keyframes llama{0%{transform:scale(.05,.3)}16%{transform:scale(1,1.15)}30%{transform:scale(.88,.95)}46%{transform:scale(1.06,1.25)}62%{transform:scale(.92,1)}80%{transform:scale(1.04,1.1)}100%{transform:scale(1.12,.5)}}
 @keyframes chispa{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx),var(--dy))}}
 .probador-pieza:focus-visible{outline:2px solid var(--dark);outline-offset:4px}
 .probador-nombre{margin:0;font-size:15px}
@@ -339,7 +333,7 @@ section{padding:80px 0}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .toque,.hero-art.imprimiendo .pieza,.hero-art.imprimiendo .gantry,.hero-art.imprimiendo .head,.perrita.reimprimir,.dragon .respira,.fab{animation:none}
+  .toque,.hero-art.imprimiendo .pieza,.hero-art.imprimiendo .gantry,.hero-art.imprimiendo .head,.perrita.reimprimir,.fab{animation:none}
   .gantry{display:none}
   .marquee ul{animation:none;flex-wrap:wrap;width:auto}
   .marquee [aria-hidden]{display:none}
