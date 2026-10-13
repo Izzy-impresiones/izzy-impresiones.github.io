@@ -335,3 +335,22 @@ section{padding:80px 0}
   .grid.revelar .card{opacity:1;translate:none}
   .pieza{translate:none}
 }
+
+/* ===== Línea de filamento que te lleva ===== */
+.atajos{display:flex;flex-wrap:wrap;gap:8px;margin:-12px 0 30px}
+.atajos a{font-size:14px;font-weight:500;text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:8px 14px}
+.atajos a:hover{border-color:var(--terra)}
+.atajos a[hidden]{display:none}
+
+.hilo{position:fixed;inset:0;width:100%;height:100%;z-index:90;pointer-events:none;overflow:visible}
+.hilo .borde{fill:none;stroke:#8f5a40;stroke-width:13;stroke-linecap:round;stroke-linejoin:round}
+.hilo .linea{fill:none;stroke:var(--terra);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.hilo .brillo{fill:none;stroke:rgba(255,255,255,.5);stroke-width:2.2;stroke-linecap:round;transform:translate(-1.2px,-1.2px)}
+.hilo .subrayado{fill:none;stroke:var(--terra);stroke-width:7;stroke-linecap:round}
+.hilo .boquilla rect{fill:var(--dark)}
+.hilo .boquilla path{fill:var(--terra)}
+
+/* Telón de color al pasar a otra página */
+.telon{position:fixed;inset:0;z-index:95;pointer-events:none;
+  background:repeating-linear-gradient(0deg,var(--terra) 0 5px,#b97a5c 5px 6px)}
+html.llegando body::after{content:"";position:fixed;inset:0;z-index:95;background:repeating-linear-gradient(0deg,var(--terra) 0 5px,#b97a5c 5px 6px)}

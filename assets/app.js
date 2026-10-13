@@ -255,6 +255,135 @@ function revelarGrillas() {
   document.querySelectorAll(".grid").forEach(g => { g.classList.add("revelar"); io.observe(g); });
 }
 
+/* ===== Línea de filamento que te lleva =====
+   Al tocar un enlace, una boquilla extruye una línea que cruza la pantalla.
+   - Dentro de la misma página: la línea arrastra la página hasta la sección y subraya su título.
+   - Hacia otra página: la línea se expande en un telón de color y la página nueva se abre desde ese punto. */
+const Hilo = (() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
+  const norm = p => p.replace(/index\.html$/, "").replace(/\/$/, "");
+  let ocupado = false;
+
+  function capa() {
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "hilo"); svg.setAttribute("aria-hidden", "true");
+    svg.innerHTML = `<path class="borde"/><path class="linea"/><path class="brillo"/><path class="subrayado"/>
+      <g class="boquilla"><rect x="-10" y="-22" width="20" height="14" rx="4"/><path d="M-6 -8 L6 -8 L0 1 Z"/></g>`;
+    document.body.appendChild(svg);
+    return { svg, partes: [...svg.querySelectorAll(".borde,.linea,.brillo")], sub: svg.querySelector(".subrayado"), boq: svg.querySelector(".boquilla") };
+  }
+  // Curva en S que cruza la pantalla de lado a lado
+  function curva(S, E) {
+    const W = innerWidth, dy = E.y - S.y;
+    const c1x = S.x < W / 2 ? W * .92 : W * .08, c2x = W - c1x;
+    return `M${S.x.toFixed(1)} ${S.y.toFixed(1)} C${c1x.toFixed(1)} ${(S.y + dy * .35).toFixed(1)} ${c2x.toFixed(1)} ${(E.y - dy * .35).toFixed(1)} ${E.x.toFixed(1)} ${E.y.toFixed(1)}`;
+  }
+  // Muestra solo el tramo [desde, hasta] de la línea y pone la boquilla en la punta
+  function trazar(c, d, desde, hasta) {
+    c.partes.forEach(p => p.setAttribute("d", d));
+    const L = c.partes[0].getTotalLength() || 1;
+    c.partes.forEach(p => { p.style.strokeDasharray = `${Math.max(hasta - desde, 0) * L} ${L * 2}`; p.style.strokeDashoffset = `${-desde * L}`; });
+    const a = c.partes[0].getPointAtLength(hasta * L), b = c.partes[0].getPointAtLength(Math.max(0, hasta * L - 6));
+    const ang = Math.atan2(a.y - b.y, a.x - b.x) * 180 / Math.PI - 90;
+    c.boq.setAttribute("transform", `translate(${a.x.toFixed(1)} ${a.y.toFixed(1)}) rotate(${(isFinite(ang) ? ang : 0).toFixed(1)})`);
+  }
+  const centro = el => { const r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; };
+  const textoDe = el => { const r = document.createRange(); r.selectNodeContents(el); const b = r.getBoundingClientRect(); return b.width ? b : el.getBoundingClientRect(); };
+  const altoHeader = () => { const h = document.querySelector(".site-header"); return h ? h.getBoundingClientRect().height : 0; };
+  const cuadro = fn => new Promise(res => { const t0 = performance.now(); const f = t => fn(t - t0) ? requestAnimationFrame(f) : res(); requestAnimationFrame(f); });
+
+  // Dentro de la misma página
+  async function irA(src, destino) {
+    ocupado = true;
+    const titulo = destino.querySelector("h2, h1") || destino;
+    const html = document.documentElement, antes = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+    const y0 = scrollY;
+    const y1 = clamp(scrollY + destino.getBoundingClientRect().top - altoHeader() - 14, 0, html.scrollHeight - innerHeight);
+    const c = capa(), T1 = 380, T2 = 1050, T3 = 560, inicioT2 = T1 * .6, finT2 = inicioT2 + T2;
+    await cuadro(e => {
+      scrollTo(0, y0 + (y1 - y0) * ease(clamp((e - inicioT2) / T2, 0, 1)));
+      const H = innerHeight, W = innerWidth, r = textoDe(titulo);
+      const S = centro(src); S.y = clamp(S.y, -40, H + 40);
+      // mientras el título no llega, la punta tira desde el borde de la pantalla
+      const E = { x: clamp(r.left, 24, W - 24), y: clamp(r.bottom + 10, 40, H - 46) };
+      const d = curva(S, E);
+      if (e < T1) trazar(c, d, 0, ease(e / T1));
+      else if (e < finT2) trazar(c, d, 0, 1);
+      else {
+        const k = clamp((e - finT2) / T3, 0, 1);
+        trazar(c, d, ease(k), 1);
+        const ancho = Math.min(r.width, W - r.left - 24), y = r.bottom + 10;
+        c.sub.setAttribute("d", `M${r.left.toFixed(1)} ${y.toFixed(1)} L${(r.left + ancho).toFixed(1)} ${y.toFixed(1)}`);
+        c.sub.style.strokeDasharray = `${ancho} ${ancho}`;
+        c.sub.style.strokeDashoffset = `${ancho * (1 - ease(k))}`;
+        c.boq.style.opacity = String(1 - k);
+      }
+      return e < finT2 + T3 + 500;
+    });
+    c.svg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, fill: "forwards" }).onfinish = () => c.svg.remove();
+    html.style.scrollBehavior = antes;
+    history.pushState(null, "", `#${destino.id}`);
+    ocupado = false;
+  }
+
+  // Hacia otra página
+  async function salir(src, href) {
+    ocupado = true;
+    const W = innerWidth, H = innerHeight, S = centro(src);
+    S.y = clamp(S.y, 20, H - 20);
+    const E = { x: W * (S.x < W / 2 ? .78 : .22), y: clamp(S.y + H * .38, H * .45, H - 70) };
+    const c = capa(), d = curva(S, E);
+    await cuadro(e => { trazar(c, d, 0, ease(clamp(e / 420, 0, 1))); return e < 440; });
+    try { sessionStorage.setItem("izzy-hilo", JSON.stringify({ x: E.x / W, y: E.y / H })); } catch (e) {}
+    const t = document.createElement("div"); t.className = "telon"; document.body.appendChild(t);
+    const x = (E.x / W * 100).toFixed(1), y = (E.y / H * 100).toFixed(1);
+    t.animate([{ clipPath: `circle(0% at ${x}% ${y}%)` }, { clipPath: `circle(150% at ${x}% ${y}%)` }],
+      { duration: 520, easing: "cubic-bezier(.6,0,.3,1)", fill: "forwards" }).onfinish = () => { location.href = href; };
+  }
+
+  // Al llegar desde otra página: el telón se recoge hacia la boquilla
+  function llegar() {
+    const html = document.documentElement;
+    let d = null;
+    try { d = JSON.parse(sessionStorage.getItem("izzy-hilo")); sessionStorage.removeItem("izzy-hilo"); } catch (e) {}
+    if (!html.classList.contains("llegando")) return;
+    const t = document.createElement("div"); t.className = "telon"; document.body.appendChild(t);
+    html.classList.remove("llegando");
+    const x = ((d?.x ?? .5) * 100).toFixed(1), y = ((d?.y ?? .5) * 100).toFixed(1);
+    t.animate([{ clipPath: `circle(150% at ${x}% ${y}%)` }, { clipPath: `circle(0% at ${x}% ${y}%)` }],
+      { duration: 650, delay: 80, easing: "cubic-bezier(.6,0,.3,1)", fill: "forwards" }).onfinish = () => t.remove();
+  }
+
+  function cerrarMenu() {
+    const m = $("#menu"); if (m && m.classList.contains("open")) { m.classList.remove("open"); $(".menu-btn")?.setAttribute("aria-expanded", "false"); }
+  }
+
+  function iniciar() {
+    llegar();
+    // Si se vuelve con el botón "atrás", limpiar cualquier resto de la animación
+    addEventListener("pageshow", e => { if (e.persisted) { document.querySelectorAll(".telon,.hilo").forEach(x => x.remove()); document.documentElement.classList.remove("llegando"); ocupado = false; } });
+    document.addEventListener("click", e => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target.closest("a[href]");
+      if (!a || a.target === "_blank" || a.hasAttribute("download") || "wa" in a.dataset) return;
+      const url = new URL(a.href, location.href);
+      if (url.origin !== location.origin) return;
+      const misma = norm(url.pathname) === norm(location.pathname) && url.search === location.search;
+      if (ocupado) { e.preventDefault(); return; }
+      if (misma) {
+        const destino = url.hash && document.getElementById(decodeURIComponent(url.hash.slice(1)));
+        if (destino && !destino.hidden) { e.preventDefault(); cerrarMenu(); irA(a, destino); }
+        return;
+      }
+      e.preventDefault(); cerrarMenu(); salir(a, url.href);
+    });
+  }
+  return { iniciar };
+})();
+
 /* ===== Páginas ===== */
 async function paginaInicio() {
   const productos = await cargarProductos();
@@ -262,6 +391,7 @@ async function paginaInicio() {
   $("#ultimos").innerHTML = ultimos.map((p, i) => tarjeta(p, i)).join("");
 
   const mom = productos.filter(p => p.dia_de_la_madre);
+  if (!(diaMadreActivo() && mom.length)) document.querySelectorAll("[data-atajo-madre]").forEach(a => a.hidden = true);
   if (diaMadreActivo() && mom.length) {
     $("#dia-madre").hidden = false;
     $("#dia-madre-grid").innerHTML = mom.slice(0, 4).map((p, i) => tarjeta(p, i)).join("");
@@ -398,8 +528,8 @@ async function paginaProducto() {
 
 /* ===== Arranque ===== */
 document.addEventListener("DOMContentLoaded", () => {
-  if (document.body.dataset.page === "hojas") return; // la versión de prueba (hojas.js) arma su propia pantalla
   montarLayout();
+  Hilo.iniciar();
   const page = document.body.dataset.page;
   const run = { inicio: paginaInicio, catalogo: paginaCatalogo, producto: paginaProducto }[page];
   if (run) run().catch(err => {
