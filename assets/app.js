@@ -133,10 +133,11 @@ function impresora() {
   if (sinMovimiento()) estado.textContent = "Tocá y cambia de color";
   else {
     art.classList.add("imprimiendo");
-    setTimeout(() => { art.classList.remove("imprimiendo"); estado.textContent = "Tocá y cambia de color"; }, 3600);
+    setTimeout(() => { art.classList.remove("imprimiendo"); art.classList.add("listo"); estado.textContent = "Tocá y cambia de color"; }, 3600);
   }
   const cambiar = () => {
     if (art.classList.contains("imprimiendo")) return;
+    art.classList.remove("listo");
     n = (n + 1) % paleta.length;
     arco.style.setProperty("--pieza", COLORES[paleta[n]]);
     estado.textContent = paleta[n];
@@ -144,7 +145,22 @@ function impresora() {
   };
   art.addEventListener("click", cambiar);
   art.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cambiar(); } });
-  // Profundidad: las piezas siguen al mouse
+  // Celular: las piezas se mueven a distinta velocidad al hacer scroll
+  if (!matchMedia("(hover: hover)").matches && !sinMovimiento()) {
+    let pendiente = false;
+    const mover = () => {
+      pendiente = false;
+      const r = art.getBoundingClientRect();
+      if (r.bottom < 0) return;
+      const avance = Math.min(Math.max(-r.top / r.height, 0), 1);
+      art.querySelectorAll(".pieza").forEach(el => {
+        el.style.setProperty("--px", "0px");
+        el.style.setProperty("--py", `${(-avance * +el.dataset.prof * 60).toFixed(1)}px`);
+      });
+    };
+    addEventListener("scroll", () => { if (!pendiente) { pendiente = true; requestAnimationFrame(mover); } }, { passive: true });
+  }
+  // Compu: las piezas siguen al mouse
   if (matchMedia("(hover: hover)").matches && !sinMovimiento()) {
     art.addEventListener("pointermove", e => {
       const r = art.getBoundingClientRect();
@@ -199,6 +215,16 @@ function cuentaRegresiva() {
   if (pintar()) { const t = setInterval(() => { if (!pintar()) clearInterval(t); }, 30000); }
 }
 
+// Celular: las tarjetas con más de una foto las van alternando solas
+function alternarFotos() {
+  if (matchMedia("(hover: hover)").matches || sinMovimiento() || !("IntersectionObserver" in window)) return;
+  const visibles = new Set();
+  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)), { threshold: .6 });
+  document.querySelectorAll(".card .photo").forEach(ph => { if (ph.querySelector("img.alt")) io.observe(ph); });
+  let tic = 0;
+  setInterval(() => { tic++; visibles.forEach(ph => { if ((tic + ph.parentElement.style.getPropertyValue("--i") * 1) % 2 === 0) ph.classList.toggle("otra"); }); }, 1800);
+}
+
 // Las tarjetas entran escalonadas cuando aparecen en pantalla
 function revelarGrillas() {
   if (sinMovimiento() || !("IntersectionObserver" in window)) return;
@@ -225,6 +251,7 @@ async function paginaInicio() {
   cinta();
   cuentaRegresiva();
   revelarGrillas();
+  alternarFotos();
   document.querySelectorAll("[data-wa]").forEach(a => {
     a.href = waLink(a.dataset.wa);
     a.target = "_blank"; a.rel = "noopener";
@@ -269,6 +296,7 @@ async function paginaCatalogo() {
   $("#sort").addEventListener("change", e => { orden = e.target.value; render(); });
   $("#search").addEventListener("input", e => { q = e.target.value.trim(); render(); });
   render();
+  alternarFotos();
 }
 
 async function paginaProducto() {
