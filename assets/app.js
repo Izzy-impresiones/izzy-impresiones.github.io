@@ -9,9 +9,11 @@ const COLORES = {
   "Amarillo flúor":"#e4ef3b","Verde":"#5e7952","Azul":"#3658a3","Marrón":"#76513a","Oro":"#b39a53",
   "Nova":"#b7a6ce","Magenta flúor":"#de429a","Rojo":"#b94239","Amarillo":"#e9c957","Morado":"#79548a",
   "Esmeralda":"#287f68","Rosa claro":"#e8c4c6","Rosa chicle":"#e48da8","Blanco":"#f4f2ec","Negro":"#282a28",
-  "Celeste":"#99c5dc","Gris plomo":"#686c6d","Naranja":"#de8b4d","Piel":"#dab899"
+  "Celeste":"#99c5dc","Gris plomo":"#686c6d","Naranja":"#de8b4d","Piel":"#dab899",
+  "Salmón":"#ef8f7b","Lila":"#c5a3d8"
 };
 const TODOS_LOS_COLORES = Object.keys(COLORES);
+const COLORES_NUEVOS = ["Salmón", "Lila"];
 const CATEGORIAS = ["Hogar","Organización","Decoración","Llaveros","Lámparas","Regalos","Figuras","Personalizados","Otros"];
 
 /* ===== Íconos ===== */
@@ -128,7 +130,7 @@ const sinMovimiento = () => matchMedia("(prefers-reduced-motion: reduce)").match
 function impresora() {
   const art = $("#impresora"); if (!art) return;
   const estado = $("#impresora-estado"), arco = $(".perrita", art);
-  const paleta = ["Rosa claro", "Celeste", "Amarillo", "Naranja", "Nova", "Esmeralda", "Rosa chicle", "Blanco", "Piel"];
+  const paleta = ["Rosa claro", "Lila", "Salmón", "Celeste", "Amarillo", "Naranja", "Nova", "Esmeralda", "Rosa chicle", "Blanco", "Piel"];
   let n = 0;
   if (sinMovimiento()) estado.textContent = "Tocá y cambia de color";
   else {
@@ -179,8 +181,9 @@ function impresora() {
 function probador() {
   const cont = $("#swatches"), pieza = $("#probador"), nombre = $("#probador-nombre");
   const inicial = "Verde";
-  cont.innerHTML = TODOS_LOS_COLORES.map(c =>
-    `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${COLORES[c]}"></i>${esc(c)}</button>`).join("");
+  const orden = [...COLORES_NUEVOS, ...TODOS_LOS_COLORES.filter(c => !COLORES_NUEVOS.includes(c))];
+  cont.innerHTML = orden.map(c =>
+    `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${COLORES[c]}"></i>${esc(c)}${COLORES_NUEVOS.includes(c) ? ` <em class="nuevo">Nuevo</em>` : ""}</button>`).join("");
   pieza.style.setProperty("--c", COLORES[inicial]);
   const dragon = $(".dragon", pieza);
   const quieto = sinMovimiento();
