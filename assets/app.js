@@ -7,13 +7,16 @@ const IZZY = {
 
 const COLORES = {
   "Amarillo flúor":"#e4ef3b","Verde":"#5e7952","Azul":"#3658a3","Marrón":"#76513a","Oro":"#b39a53",
-  "Nova":"#b7a6ce","Magenta flúor":"#de429a","Rojo":"#b94239","Amarillo":"#e9c957","Morado":"#79548a",
+  "Nova":"#5b4fc4","Magenta flúor":"#de429a","Rojo":"#b94239","Amarillo":"#e9c957","Morado":"#79548a",
   "Esmeralda":"#287f68","Rosa claro":"#e8c4c6","Blanco":"#f4f2ec","Negro":"#282a28",
   "Celeste":"#99c5dc","Gris plomo":"#686c6d","Naranja":"#de8b4d","Piel":"#dab899",
   "Salmón":"#ef8f7b","Lila":"#c5a3d8"
 };
 const TODOS_LOS_COLORES = Object.keys(COLORES);
 const COLORES_NUEVOS = ["Salmón", "Lila"];
+// Filamentos translúcidos: se muestran con brillo y transparencia
+const TRANSLUCIDOS = { "Nova": "radial-gradient(circle at 32% 28%,rgba(255,255,255,.65),transparent 42%),linear-gradient(135deg,#8f7ff2,#4b3fb4 70%,#3a2f96)" };
+const fondoColor = c => TRANSLUCIDOS[c] || COLORES[c] || "#ccc";
 const CATEGORIAS = ["Hogar","Organización","Decoración","Llaveros","Lámparas","Regalos","Figuras","Personalizados","Otros"];
 
 /* ===== Íconos ===== */
@@ -95,7 +98,7 @@ function montarLayout() {
 
 /* ===== Tarjeta de producto ===== */
 function tarjeta(p, i = 0) {
-  const cols = coloresDe(p).slice(0, 5).map(c => `<i title="${esc(c)}" style="background:${COLORES[c] || "#ccc"}"></i>`).join("");
+  const cols = coloresDe(p).slice(0, 5).map(c => `<i title="${esc(c)}" style="background:${fondoColor(c)}"></i>`).join("");
   const badge = p.dia_de_la_madre && diaMadreActivo() ? `<span class="badge mom-b">Día de la Madre</span>` : "";
   return `<article class="card" style="--i:${i % 8}">
     <a class="photo" href="${productoURL(p)}">${badge}<img src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}" loading="lazy">${p.imagenes[1] ? `<img class="alt" src="${esc(p.imagenes[1])}" alt="" loading="lazy">` : ""}</a>
@@ -168,7 +171,7 @@ function probador() {
   const inicial = "Verde";
   const orden = [...COLORES_NUEVOS, ...TODOS_LOS_COLORES.filter(c => !COLORES_NUEVOS.includes(c))];
   cont.innerHTML = orden.map(c =>
-    `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${COLORES[c]}"></i>${esc(c)}${COLORES_NUEVOS.includes(c) ? ` <em class="nuevo">Nuevo</em>` : ""}</button>`).join("");
+    `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${fondoColor(c)}"></i>${esc(c)}${COLORES_NUEVOS.includes(c) ? ` <em class="nuevo">Nuevo</em>` : ""}</button>`).join("");
   pieza.style.setProperty("--c", COLORES[inicial]);
   pieza.innerHTML = `<div class="dragon-foto">
       <span class="tinte"></span>
@@ -194,6 +197,7 @@ function probador() {
     const b = e.target.closest(".sw"); if (!b) return;
     cont.querySelectorAll(".sw").forEach(x => x.setAttribute("aria-pressed", x === b));
     pieza.style.setProperty("--c", COLORES[b.dataset.c]);
+    pieza.classList.toggle("translucido", b.dataset.c in TRANSLUCIDOS);
     nombre.textContent = b.dataset.c;
     fuego();
   });
@@ -361,7 +365,7 @@ async function paginaProducto() {
         <span class="stock">Disponible para pedir · listo en 1 a 2 días</span>
         <div class="desc">${formatoDescripcion(p.descripcion)}</div>
         ${cols.length ? `<fieldset class="picker"><legend>Elegí tu color: <strong id="color-nombre">${esc(color)}</strong></legend>
-          <div>${cols.map((c, i) => `<button style="background:${COLORES[c] || "#ccc"}" title="${esc(c)}" aria-label="${esc(c)}" aria-pressed="${i === 0}" data-c="${esc(c)}"></button>`).join("")}</div>
+          <div>${cols.map((c, i) => `<button style="background:${fondoColor(c)}" title="${esc(c)}" aria-label="${esc(c)}" aria-pressed="${i === 0}" data-c="${esc(c)}"></button>`).join("")}</div>
           ${previa ? `<small class="previa-tip">Tocá un color para ver cómo queda.</small>` : ""}<small>Los tonos son orientativos y pueden variar según la pantalla y el material.</small></fieldset>` : ""}
         <a id="wa-btn" class="btn wa" href="${waProducto(p, color)}" target="_blank" rel="noopener">${ICON.wa} Pedir por WhatsApp</a>
         <div class="notes"><span>Hecho con impresión 3D</span><span>Seña por transferencia</span><span>Entrega en Corrientes Capital</span></div>
