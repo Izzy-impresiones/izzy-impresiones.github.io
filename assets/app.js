@@ -2,7 +2,7 @@
 const IZZY = {
   whatsapp: "543794112142",
   instagram: "https://www.instagram.com/izzy.impresiones",
-  diaMadre: { fecha: "2026-10-18", encargarAntes: "jueves 15/10" },
+  diaMadre: { fecha: "2026-10-18", encargarAntes: "jueves 15/10", encargarHasta: "2026-10-15T23:59:59-03:00" },
 };
 
 const COLORES = {
@@ -92,11 +92,11 @@ function montarLayout() {
 }
 
 /* ===== Tarjeta de producto ===== */
-function tarjeta(p) {
+function tarjeta(p, i = 0) {
   const cols = coloresDe(p).slice(0, 5).map(c => `<i title="${esc(c)}" style="background:${COLORES[c] || "#ccc"}"></i>`).join("");
   const badge = p.dia_de_la_madre && diaMadreActivo() ? `<span class="badge mom-b">Día de la Madre</span>` : "";
-  return `<article class="card">
-    <a class="photo" href="${productoURL(p)}">${badge}<img src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}" loading="lazy"></a>
+  return `<article class="card" style="--i:${i % 8}">
+    <a class="photo" href="${productoURL(p)}">${badge}<img src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}" loading="lazy">${p.imagenes[1] ? `<img class="alt" src="${esc(p.imagenes[1])}" alt="" loading="lazy">` : ""}</a>
     <div class="body">
       <div class="meta"><span>${esc(p.categoria)}</span><span class="mini">${cols}</span></div>
       <h3><a href="${productoURL(p)}">${esc(p.nombre)}</a></h3>
@@ -121,18 +121,110 @@ function formatoDescripcion(txt) {
   }).join("");
 }
 
+/* ===== Movimiento ===== */
+const sinMovimiento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Hero: las piezas se imprimen al cargar; al tocar, la pieza cambia de color
+function impresora() {
+  const art = $("#impresora"); if (!art) return;
+  const estado = $("#impresora-estado"), arco = $(".arch", art);
+  const paleta = ["Verde", "Rosa chicle", "Celeste", "Naranja", "Morado", "Amarillo", "Esmeralda", "Magenta flúor"];
+  let n = 0;
+  if (sinMovimiento()) estado.textContent = "Tocá y cambia de color";
+  else {
+    art.classList.add("imprimiendo");
+    setTimeout(() => { art.classList.remove("imprimiendo"); estado.textContent = "Tocá y cambia de color"; }, 3600);
+  }
+  const cambiar = () => {
+    if (art.classList.contains("imprimiendo")) return;
+    n = (n + 1) % paleta.length;
+    arco.style.setProperty("--pieza", COLORES[paleta[n]]);
+    estado.textContent = paleta[n];
+    if (!sinMovimiento()) { arco.classList.remove("reimprimir"); void arco.offsetWidth; arco.classList.add("reimprimir"); }
+  };
+  art.addEventListener("click", cambiar);
+  art.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cambiar(); } });
+  // Profundidad: las piezas siguen al mouse
+  if (matchMedia("(hover: hover)").matches && !sinMovimiento()) {
+    art.addEventListener("pointermove", e => {
+      const r = art.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      art.querySelectorAll(".pieza").forEach(el => {
+        const k = +el.dataset.prof * 18;
+        el.style.setProperty("--px", `${(x * k).toFixed(1)}px`);
+        el.style.setProperty("--py", `${(y * k * .6).toFixed(1)}px`);
+      });
+    });
+    art.addEventListener("pointerleave", () => art.querySelectorAll(".pieza").forEach(el => { el.style.setProperty("--px", "0px"); el.style.setProperty("--py", "0px"); }));
+  }
+}
+
+// Sección de colores: tocá un color y la lámpara se imprime en ese color
+function probador() {
+  const cont = $("#swatches"), pieza = $("#probador"), nombre = $("#probador-nombre");
+  const inicial = "Verde";
+  cont.innerHTML = TODOS_LOS_COLORES.map(c =>
+    `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${COLORES[c]}"></i>${esc(c)}</button>`).join("");
+  pieza.style.setProperty("--c", COLORES[inicial]);
+  const lampara = $(".lampara", pieza);
+  cont.addEventListener("click", e => {
+    const b = e.target.closest(".sw"); if (!b) return;
+    cont.querySelectorAll(".sw").forEach(x => x.setAttribute("aria-pressed", x === b));
+    pieza.style.setProperty("--c", COLORES[b.dataset.c]);
+    nombre.textContent = b.dataset.c;
+    if (!sinMovimiento()) { lampara.classList.remove("reimprimir"); void lampara.offsetWidth; lampara.classList.add("reimprimir"); }
+  });
+}
+
+// Cinta: se duplica el contenido para que el movimiento sea continuo
+function cinta() {
+  const ul = $(".marquee ul"); if (!ul) return;
+  [...ul.children].forEach(li => { const c = li.cloneNode(true); c.setAttribute("aria-hidden", "true"); ul.appendChild(c); });
+}
+
+// Cuenta regresiva hasta el último día para encargar
+function cuentaRegresiva() {
+  const el = $("#reloj"); if (!el || $("#dia-madre").hidden) return;
+  const fin = new Date(IZZY.diaMadre.encargarHasta);
+  const pintar = () => {
+    const ms = fin - new Date();
+    if (ms <= 0) { el.innerHTML = `<p>Se terminó el plazo recomendado. Escribinos y vemos si llegamos.</p>`; return false; }
+    const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60;
+    el.innerHTML = [[d, d === 1 ? "día" : "días"], [h, "horas"], [m, "min"]]
+      .map(([v, l]) => `<div><b>${String(v).padStart(2, "0")}</b><small>${l}</small></div>`).join("")
+      + `<div style="background:none;text-align:left;align-self:center"><small>para encargar a tiempo</small></div>`;
+    return true;
+  };
+  el.hidden = false;
+  if (pintar()) { const t = setInterval(() => { if (!pintar()) clearInterval(t); }, 30000); }
+}
+
+// Las tarjetas entran escalonadas cuando aparecen en pantalla
+function revelarGrillas() {
+  if (sinMovimiento() || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("visto"); io.unobserve(e.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll(".grid").forEach(g => { g.classList.add("revelar"); io.observe(g); });
+}
+
 /* ===== Páginas ===== */
 async function paginaInicio() {
   const productos = await cargarProductos();
   const ultimos = [...productos].sort((a, b) => b.orden - a.orden).slice(0, 6);
-  $("#ultimos").innerHTML = ultimos.map(tarjeta).join("");
+  $("#ultimos").innerHTML = ultimos.map((p, i) => tarjeta(p, i)).join("");
 
   const mom = productos.filter(p => p.dia_de_la_madre);
   if (diaMadreActivo() && mom.length) {
     $("#dia-madre").hidden = false;
-    $("#dia-madre-grid").innerHTML = mom.slice(0, 4).map(tarjeta).join("");
+    $("#dia-madre-grid").innerHTML = mom.slice(0, 4).map((p, i) => tarjeta(p, i)).join("");
   }
-  $("#swatches").innerHTML = TODOS_LOS_COLORES.map(c => `<div class="sw"><i style="background:${COLORES[c]}"></i>${esc(c)}</div>`).join("");
+  $("#ver-todos").textContent = `Ver los ${productos.length} →`;
+  impresora();
+  probador();
+  cinta();
+  cuentaRegresiva();
+  revelarGrillas();
   document.querySelectorAll("[data-wa]").forEach(a => {
     a.href = waLink(a.dataset.wa);
     a.target = "_blank"; a.rel = "noopener";
@@ -164,7 +256,7 @@ async function paginaCatalogo() {
     if (orden === "mayor") lista.sort((a, b) => (b.precio ?? -1) - (a.precio ?? -1));
     if (orden === "nuevos") lista.sort((a, b) => b.orden - a.orden);
     $("#count").textContent = `${lista.length} producto${lista.length === 1 ? "" : "s"}`;
-    $("#grid").innerHTML = lista.length ? lista.map(tarjeta).join("")
+    $("#grid").innerHTML = lista.length ? lista.map((p, i) => tarjeta(p, i)).join("")
       : `<p class="empty">No encontramos productos. ¿Lo buscás personalizado? <a href="${waGeneral()}" target="_blank" rel="noopener">Escribinos</a>.</p>`;
   }
   cont.addEventListener("click", e => {

@@ -223,3 +223,93 @@ section{padding:80px 0}
 .previa[hidden]{display:none}
 .previa button{border:0;background:none;font:inherit;font-weight:600;text-decoration:underline;cursor:pointer;color:var(--dark);padding:4px 0}
 .picker .previa-tip{color:var(--dark);font-weight:500}
+
+/* ===== Movimiento e interacción ===== */
+
+/* Hero: las piezas se imprimen capa a capa */
+.hero-art{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.hero-art:focus-visible{outline:2px solid var(--dark);outline-offset:4px}
+.pieza{--px:0px;--py:0px;translate:var(--px) var(--py);transition:translate .5s cubic-bezier(.2,.7,.3,1),background-color .4s}
+.arch{background:var(--pieza,#9aae94)}
+.hero-art.imprimiendo .pieza{animation:imprimir var(--dur,1.6s) steps(22,end) var(--del,0s) both}
+.hero-art .disk{--del:.2s;--dur:1.1s}
+.hero-art .vase{--del:.9s;--dur:1.7s}
+.hero-art .arch{--del:2.1s;--dur:1.4s}
+@keyframes imprimir{from{clip-path:inset(100% -30% -30% -30%)}to{clip-path:inset(-30% -30% -30% -30%)}}
+.arch.reimprimir{animation:imprimir .9s steps(16,end) both}
+
+/* Cabezal de la impresora */
+.gantry{position:absolute;left:4%;right:4%;bottom:20%;height:3px;background:#5d6a5c;border-radius:3px;opacity:0;pointer-events:none}
+.gantry .head{position:absolute;top:-15px;left:0;width:26px;height:18px;border-radius:5px 5px 2px 2px;background:var(--dark);box-shadow:0 4px 10px rgba(0,0,0,.18)}
+.gantry .head::after{content:"";position:absolute;left:50%;bottom:-6px;translate:-50% 0;border:5px solid transparent;border-top:6px solid #c98a6a;border-bottom:0}
+.hero-art.imprimiendo .gantry{animation:subir 3.5s linear forwards}
+.hero-art.imprimiendo .head{animation:barrer .45s ease-in-out infinite alternate}
+@keyframes subir{0%{opacity:1;bottom:18%}92%{opacity:1;bottom:72%}100%{opacity:0;bottom:76%}}
+@keyframes barrer{from{left:6%}to{left:calc(94% - 26px)}}
+
+/* Cinta en movimiento */
+.strip{overflow:hidden}
+.marquee ul{width:max-content;flex-wrap:nowrap;justify-content:flex-start;gap:48px;padding-inline:24px;animation:cinta 34s linear infinite}
+.strip:hover .marquee ul{animation-play-state:paused}
+.strip li{white-space:nowrap}
+@keyframes cinta{to{transform:translateX(-50%)}}
+
+/* Cuenta regresiva */
+.reloj{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.reloj[hidden]{display:none}
+.reloj div{background:rgba(255,255,255,.55);border-radius:12px;padding:8px 12px;min-width:64px;text-align:center}
+.reloj b{display:block;font-size:26px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;color:#6d3843}
+.reloj small{font-size:12px;color:#5b4a48}
+.reloj p{margin:0;font-weight:600;color:#6d3843}
+
+/* Tarjetas: segunda foto y entrada escalonada */
+.card .photo img.alt{position:absolute;inset:0;opacity:0;transition:opacity .35s,transform .4s}
+@media (hover:hover){.card:hover .photo img.alt{opacity:1}}
+.grid.revelar .card{opacity:0;translate:0 18px}
+.grid.revelar.visto .card{opacity:1;translate:0 0;transition:opacity .5s,translate .6s cubic-bezier(.2,.7,.3,1),border-color .2s,transform .2s;transition-delay:calc(var(--i,0) * 70ms),calc(var(--i,0) * 70ms),0s,0s}
+
+/* Probador de colores */
+.probador{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:40px;align-items:center;margin-top:30px}
+.probador-pieza{--c:#5e7952;position:relative;aspect-ratio:1;border-radius:var(--radius);background:linear-gradient(160deg,#eee6d9,#e4d8c5);overflow:hidden}
+.lampara{position:absolute;left:28%;right:28%;top:16%;bottom:20%;border-radius:46% 46% 14px 14px / 30% 30% 14px 14px;background:repeating-linear-gradient(0deg,var(--c) 0 5px,color-mix(in srgb,var(--c) 78%,#000) 5px 6.5px);box-shadow:inset -22px 0 30px rgba(0,0,0,.14),inset 10px 0 20px rgba(255,255,255,.18),0 18px 30px rgba(60,50,30,.16);transition:background .3s}
+.lampara.reimprimir{animation:imprimir 1s steps(20,end) both}
+.sombra{position:absolute;left:18%;right:18%;bottom:14%;height:7%;border-radius:50%;background:rgba(60,50,30,.14)}
+.probador-nombre{margin:0;font-size:15px}
+.probador .swatches{margin-top:14px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.sw{background:none;border:0;border-radius:99px;padding:5px 10px 5px 5px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;text-align:left;transition:background .2s}
+.sw:hover{background:var(--sage)}
+.sw i{transition:transform .2s}
+.sw[aria-pressed=true]{background:var(--sage);font-weight:600}
+.sw[aria-pressed=true] i{transform:scale(1.15);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08),0 0 0 2px var(--bg),0 0 0 4px var(--dark)}
+.sw:focus-visible{outline:2px solid var(--dark);outline-offset:2px}
+
+/* Botón de WhatsApp que llama la atención una vez */
+.fab{animation:latido 1.2s ease-out 4s 2}
+@keyframes latido{0%{box-shadow:0 10px 26px rgba(0,0,0,.22),0 0 0 0 rgba(47,107,69,.5)}100%{box-shadow:0 10px 26px rgba(0,0,0,.22),0 0 0 22px rgba(47,107,69,0)}}
+
+@media (max-width:900px){
+  .hero{padding-top:28px;gap:28px}
+  .hero-art{order:-1;aspect-ratio:1.15;max-width:none;border-radius:110px 22px 22px 22px}
+  .hero-art .vase{bottom:24%;height:48%}
+  .probador{grid-template-columns:minmax(0,1fr);gap:20px}
+  .probador>div{min-width:0}
+  .probador-pieza{max-width:300px;width:100%;margin-inline:auto}
+}
+@media (max-width:720px){
+  .probador-pieza{max-width:240px}
+  .probador .swatches{display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:6px;margin-inline:-16px;padding:4px 16px 10px;scrollbar-width:none}
+  .probador .swatches::-webkit-scrollbar{display:none}
+  .probador .sw{flex:none;scroll-snap-align:start;background:var(--card)}
+  .probador .sw[aria-pressed=true]{background:var(--sage)}
+  .probador-nombre{text-align:center}
+  .marquee ul{animation-duration:26s}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hero-art.imprimiendo .pieza,.hero-art.imprimiendo .gantry,.hero-art.imprimiendo .head,.arch.reimprimir,.lampara.reimprimir,.fab{animation:none}
+  .gantry{display:none}
+  .marquee ul{animation:none;flex-wrap:wrap;width:auto}
+  .marquee [aria-hidden]{display:none}
+  .grid.revelar .card{opacity:1;translate:none}
+  .pieza{translate:none}
+}
