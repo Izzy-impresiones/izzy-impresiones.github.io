@@ -177,25 +177,29 @@ function impresora() {
   }
 }
 
-// Sección de colores: tocá un color y la lámpara se imprime en ese color
-function probador() {
+// Sección de colores: tocá un color, el dragón cambia de color y escupe fuego
+async function probador() {
   const cont = $("#swatches"), pieza = $("#probador"), nombre = $("#probador-nombre");
   const inicial = "Verde";
   const orden = [...COLORES_NUEVOS, ...TODOS_LOS_COLORES.filter(c => !COLORES_NUEVOS.includes(c))];
   cont.innerHTML = orden.map(c =>
     `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${COLORES[c]}"></i>${esc(c)}${COLORES_NUEVOS.includes(c) ? ` <em class="nuevo">Nuevo</em>` : ""}</button>`).join("");
   pieza.style.setProperty("--c", COLORES[inicial]);
+  try { pieza.innerHTML = await (await fetch("assets/dragon.svg")).text(); } catch (e) { return; }
   const dragon = $(".dragon", pieza);
-  const quieto = sinMovimiento();
-  if (quieto) dragon.pauseAnimations();
-  const sacudir = () => { if (!quieto) dragon.querySelectorAll(".sacudida").forEach(a => { try { a.beginElement(); } catch (e) {} }); };
-  pieza.addEventListener("click", sacudir);
+  const fuego = () => {
+    if (sinMovimiento() || !dragon) return;
+    dragon.classList.remove("escupe"); void dragon.getBoundingClientRect(); dragon.classList.add("escupe");
+  };
+  dragon.addEventListener("animationend", e => { if (e.animationName === "fuego-vis") dragon.classList.remove("escupe"); });
+  pieza.addEventListener("click", fuego);
+  pieza.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fuego(); } });
   cont.addEventListener("click", e => {
     const b = e.target.closest(".sw"); if (!b) return;
     cont.querySelectorAll(".sw").forEach(x => x.setAttribute("aria-pressed", x === b));
     pieza.style.setProperty("--c", COLORES[b.dataset.c]);
     nombre.textContent = b.dataset.c;
-    if (!quieto) { dragon.classList.remove("reimprimir"); void dragon.getBoundingClientRect(); dragon.classList.add("reimprimir"); setTimeout(sacudir, 1200); }
+    fuego();
   });
 }
 
