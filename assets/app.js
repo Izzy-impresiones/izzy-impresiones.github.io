@@ -398,6 +398,7 @@ async function paginaProducto() {
 
 /* ===== Arranque ===== */
 document.addEventListener("DOMContentLoaded", () => {
+  if (document.body.dataset.page === "hojas") return; // la versión de prueba (hojas.js) arma su propia pantalla
   montarLayout();
   const page = document.body.dataset.page;
   const run = { inicio: paginaInicio, catalogo: paginaCatalogo, producto: paginaProducto }[page];
