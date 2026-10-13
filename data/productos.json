@@ -201,7 +201,6 @@
       "Nova",
       "Amarillo",
       "Rosa claro",
-      "Rosa chicle",
       "Blanco",
       "Celeste"
     ],
@@ -217,9 +216,7 @@
     "nombre": "Pantera Rosa Pensativa · 22 cm",
     "categoria": "Figuras",
     "precio": 21000,
-    "colores": [
-      "Rosa chicle"
-    ],
+    "colores": [],
     "imagenes": [
       "img/productos/pantera-rosa-pensativa-22-cm-1.webp"
     ],
@@ -232,9 +229,7 @@
     "nombre": "Pantera Rosa Saludo · 19 cm",
     "categoria": "Figuras",
     "precio": 19000,
-    "colores": [
-      "Rosa chicle"
-    ],
+    "colores": [],
     "imagenes": [
       "img/productos/pantera-rosa-saludo-19-cm-1.webp"
     ],
@@ -447,7 +442,6 @@
       "Morado",
       "Esmeralda",
       "Rosa claro",
-      "Rosa chicle",
       "Blanco",
       "Negro",
       "Celeste",
@@ -494,9 +488,7 @@
     "nombre": "Organizador de maquillaje Hexagonal",
     "categoria": "Organización",
     "precio": 11000,
-    "colores": [
-      "Rosa chicle"
-    ],
+    "colores": [],
     "imagenes": [
       "img/productos/organizador-de-maquillaje-hexagonal-1.webp"
     ],
@@ -548,7 +540,6 @@
       "Morado",
       "Esmeralda",
       "Rosa claro",
-      "Rosa chicle",
       "Blanco",
       "Negro",
       "Celeste",
@@ -567,9 +558,7 @@
     "nombre": "Sujeta saquitos Flamenco",
     "categoria": "Hogar",
     "precio": 2000,
-    "colores": [
-      "Rosa chicle"
-    ],
+    "colores": [],
     "imagenes": [
       "img/productos/sujeta-saquitos-flamenco-1.webp"
     ],

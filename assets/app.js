@@ -8,7 +8,7 @@ const IZZY = {
 const COLORES = {
   "Amarillo flúor":"#e4ef3b","Verde":"#5e7952","Azul":"#3658a3","Marrón":"#76513a","Oro":"#b39a53",
   "Nova":"#b7a6ce","Magenta flúor":"#de429a","Rojo":"#b94239","Amarillo":"#e9c957","Morado":"#79548a",
-  "Esmeralda":"#287f68","Rosa claro":"#e8c4c6","Rosa chicle":"#e48da8","Blanco":"#f4f2ec","Negro":"#282a28",
+  "Esmeralda":"#287f68","Rosa claro":"#e8c4c6","Blanco":"#f4f2ec","Negro":"#282a28",
   "Celeste":"#99c5dc","Gris plomo":"#686c6d","Naranja":"#de8b4d","Piel":"#dab899",
   "Salmón":"#ef8f7b","Lila":"#c5a3d8"
 };
@@ -130,11 +130,8 @@ const sinMovimiento = () => matchMedia("(prefers-reduced-motion: reduce)").match
 function impresora() {
   const art = $("#impresora"); if (!art) return;
   const estado = $("#impresora-estado");
-  if (sinMovimiento()) estado.textContent = "Hecha capa a capa";
-  else {
-    art.classList.add("imprimiendo");
-    setTimeout(() => { art.classList.remove("imprimiendo"); estado.textContent = "Hecha capa a capa"; }, 3500);
-  }
+  art.classList.add("imprimiendo");
+  setTimeout(() => { art.classList.remove("imprimiendo"); estado.textContent = "Hecha capa a capa"; }, 3500);
   // Celular: las piezas se mueven a distinta velocidad al hacer scroll
   if (!matchMedia("(hover: hover)").matches && !sinMovimiento()) {
     let pendiente = false;
@@ -188,7 +185,6 @@ function probador() {
     </div>`;
   const dragon = $(".dragon-foto", pieza);
   const fuego = () => {
-    if (sinMovimiento()) return;
     dragon.classList.remove("escupe"); void dragon.getBoundingClientRect(); dragon.classList.add("escupe");
   };
   dragon.addEventListener("animationend", e => { if (e.animationName === "fuego-vis") dragon.classList.remove("escupe"); });
@@ -229,7 +225,7 @@ function cuentaRegresiva() {
 // Las tarjetas con más de una foto las van alternando solas (celu y compu)
 const fotos = { io: null, visibles: new Set(), tic: 0 };
 function alternarFotos(raiz = document) {
-  if (sinMovimiento() || !("IntersectionObserver" in window)) return;
+  if (!("IntersectionObserver" in window)) return;
   if (!fotos.io) {
     fotos.io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? fotos.visibles.add(e.target) : fotos.visibles.delete(e.target)), { threshold: .5 });
     setInterval(() => {
