@@ -127,13 +127,13 @@ const sinMovimiento = () => matchMedia("(prefers-reduced-motion: reduce)").match
 // Hero: las piezas se imprimen al cargar; al tocar, la pieza cambia de color
 function impresora() {
   const art = $("#impresora"); if (!art) return;
-  const estado = $("#impresora-estado"), arco = $(".arch", art);
-  const paleta = ["Verde", "Rosa chicle", "Celeste", "Naranja", "Morado", "Amarillo", "Esmeralda", "Magenta flúor"];
+  const estado = $("#impresora-estado"), arco = $(".perrita", art);
+  const paleta = ["Rosa claro", "Celeste", "Amarillo", "Naranja", "Nova", "Esmeralda", "Rosa chicle", "Blanco", "Piel"];
   let n = 0;
   if (sinMovimiento()) estado.textContent = "Tocá y cambia de color";
   else {
     art.classList.add("imprimiendo");
-    setTimeout(() => { art.classList.remove("imprimiendo"); art.classList.add("listo"); estado.textContent = "Tocá y cambia de color"; }, 3600);
+    setTimeout(() => { art.classList.remove("imprimiendo"); art.classList.add("listo"); estado.textContent = "Tocá y cambia de color"; }, 3500);
   }
   const cambiar = () => {
     if (art.classList.contains("imprimiendo")) return;
@@ -182,13 +182,17 @@ function probador() {
   cont.innerHTML = TODOS_LOS_COLORES.map(c =>
     `<button type="button" class="sw" data-c="${esc(c)}" aria-pressed="${c === inicial}"><i style="background:${COLORES[c]}"></i>${esc(c)}</button>`).join("");
   pieza.style.setProperty("--c", COLORES[inicial]);
-  const lampara = $(".lampara", pieza);
+  const dragon = $(".dragon", pieza);
+  const quieto = sinMovimiento();
+  if (quieto) dragon.pauseAnimations();
+  const sacudir = () => { if (!quieto) dragon.querySelectorAll(".sacudida").forEach(a => { try { a.beginElement(); } catch (e) {} }); };
+  pieza.addEventListener("click", sacudir);
   cont.addEventListener("click", e => {
     const b = e.target.closest(".sw"); if (!b) return;
     cont.querySelectorAll(".sw").forEach(x => x.setAttribute("aria-pressed", x === b));
     pieza.style.setProperty("--c", COLORES[b.dataset.c]);
     nombre.textContent = b.dataset.c;
-    if (!sinMovimiento()) { lampara.classList.remove("reimprimir"); void lampara.offsetWidth; lampara.classList.add("reimprimir"); }
+    if (!quieto) { dragon.classList.remove("reimprimir"); void dragon.getBoundingClientRect(); dragon.classList.add("reimprimir"); setTimeout(sacudir, 1200); }
   });
 }
 
