@@ -216,7 +216,9 @@
     "nombre": "Pantera Rosa Pensativa · 22 cm",
     "categoria": "Figuras",
     "precio": 21000,
-    "colores": [],
+    "colores": [
+      "Rosa claro"
+    ],
     "imagenes": [
       "img/productos/pantera-rosa-pensativa-22-cm-1.webp"
     ],
@@ -229,7 +231,9 @@
     "nombre": "Pantera Rosa Saludo · 19 cm",
     "categoria": "Figuras",
     "precio": 19000,
-    "colores": [],
+    "colores": [
+      "Rosa claro"
+    ],
     "imagenes": [
       "img/productos/pantera-rosa-saludo-19-cm-1.webp"
     ],
