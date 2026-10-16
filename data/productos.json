@@ -711,5 +711,47 @@
     "descripcion": "Estuche para AirPods Pro 2 con la cara de Spider-Man. Se coloca sobre el estuche de carga y se abre junto con la tapa.",
     "dia_de_la_madre": false,
     "orden": 45
+  },
+  {
+    "slug": "soporte-para-celular-regulable",
+    "nombre": "Soporte para celular regulable",
+    "categoria": "Organización",
+    "precio": null,
+    "colores": "*",
+    "imagenes": [
+      "img/productos/soporte-para-celular-regulable-1.jpg",
+      "img/productos/soporte-para-celular-regulable-2.jpg"
+    ],
+    "descripcion": "Soporte plegable para celular con varias alturas: elegí el ángulo que más te sirva y apoyalo en el escalón que quieras.\n\n* Varias posiciones de inclinación\n* Ideal para el escritorio, la mesa de luz o para ver videos\n* Se pliega para guardarlo o llevarlo\n\nTenemos una gran variedad de colores disponibles.",
+    "dia_de_la_madre": false,
+    "orden": 46,
+    "vista_previa": true
+  },
+  {
+    "slug": "mascara-oni",
+    "nombre": "Máscara Oni",
+    "categoria": "Otros",
+    "precio": null,
+    "colores": "",
+    "imagenes": [
+      "img/productos/mascara-oni-1.jpg"
+    ],
+    "descripcion": "Media máscara estilo oni samurái, en negro con colmillos y dientes dorados. Ideal para cosplay, disfraces o para decorar.",
+    "dia_de_la_madre": false,
+    "orden": 47
+  },
+  {
+    "slug": "katana-retractil",
+    "nombre": "Katana retráctil",
+    "categoria": "Otros",
+    "precio": null,
+    "colores": "*",
+    "imagenes": [
+      "img/productos/katana-retractil-1.jpg"
+    ],
+    "video": "img/productos/katana-retractil.mp4",
+    "descripcion": "Katana impresa en 3D que se guarda en el mango y se despliega con un movimiento. Mirá el video para verla en acción ⚔️",
+    "dia_de_la_madre": false,
+    "orden": 48
   }
 ]

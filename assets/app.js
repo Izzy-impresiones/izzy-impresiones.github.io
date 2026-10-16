@@ -99,7 +99,7 @@ function montarLayout() {
 /* ===== Tarjeta de producto ===== */
 function tarjeta(p, i = 0) {
   const cols = coloresDe(p).slice(0, 5).map(c => `<i title="${esc(c)}" style="background:${fondoColor(c)}"></i>`).join("");
-  const badge = p.dia_de_la_madre && diaMadreActivo() ? `<span class="badge mom-b">Día de la Madre</span>` : "";
+  const badge = p.dia_de_la_madre && diaMadreActivo() ? `<span class="badge mom-b">Día de la Madre</span>` : p.video ? `<span class="badge vid-b">▶ Video</span>` : "";
   return `<article class="card" style="--i:${i % 8}">
     <a class="photo" href="${productoURL(p)}">${badge}<img src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}" loading="lazy">${p.imagenes[1] ? `<img class="alt" src="${esc(p.imagenes[1])}" alt="" loading="lazy">` : ""}</a>
     <div class="body">
@@ -340,6 +340,7 @@ async function paginaProducto() {
   let fotoActual = p.imagenes[0], colorPrevia = null, turno = 0;
   const mostrarFoto = async () => {
     const t = ++turno, img = $("#foto"), caja = main.querySelector(".previa");
+    verVideo(false);
     if (!colorPrevia) { img.src = fotoActual; if (caja) caja.hidden = true; return; }
     img.classList.add("pintando");
     const url = await window.vistaPreviaColor(fotoActual, COLORES[colorPrevia], p.imagenes[0]);
@@ -349,14 +350,24 @@ async function paginaProducto() {
     caja.hidden = !url;
     if (url) $("#previa-txt").textContent = `Vista previa en ${colorPrevia}`;
   };
+  // Video del producto (opcional): "video": "img/productos/archivo.mp4"
+  const verVideo = on => {
+    const v = $("#vid"), img = $("#foto");
+    if (!v) return;
+    v.hidden = !on; img.hidden = on;
+    main.querySelector(".gallery .main").classList.toggle("con-video", on);
+    if (on) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause();
+  };
+  const nThumbs = p.imagenes.length + (p.video ? 1 : 0);
   main.innerHTML = `<div class="container">
     <nav class="crumbs"><a href="index.html">Inicio</a><span>/</span><a href="catalogo.html">Catálogo</a><span>/</span>${esc(p.nombre)}</nav>
     <div class="detail">
       <div class="gallery">
-        <div class="main"><img id="foto" src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}">
+        <div class="main${p.video ? " con-video" : ""}"><img id="foto" src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}"${p.video ? " hidden" : ""}>
+          ${p.video ? `<video id="vid" src="${esc(p.video)}" poster="${esc(p.imagenes[0])}" autoplay muted loop playsinline controls preload="metadata"></video>` : ""}
           ${previa ? `<div class="previa" hidden><span id="previa-txt"></span><button type="button" id="previa-off">Ver foto original</button></div>` : ""}</div>
-        ${p.imagenes.length > 1 ? `<div class="thumbs">${p.imagenes.map((u, i) =>
-          `<button aria-label="Ver foto ${i + 1}" aria-pressed="${i === 0}" data-src="${esc(u)}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
+        ${nThumbs > 1 ? `<div class="thumbs">${p.video ? `<button class="t-video" aria-label="Ver video" aria-pressed="true" data-video="1"><img src="${esc(p.imagenes[0])}" alt="" loading="lazy"><span aria-hidden="true">▶</span></button>` : ""}${p.imagenes.map((u, i) =>
+          `<button aria-label="Ver foto ${i + 1}" aria-pressed="${i === 0 && !p.video}" data-src="${esc(u)}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
       </div>
       <div class="d-copy">
         <span class="eyebrow">${esc(p.categoria)}</span>
@@ -379,7 +390,10 @@ async function paginaProducto() {
   alternarFotos(main);
   main.addEventListener("click", e => {
     const t = e.target.closest(".thumbs button");
-    if (t) {
+    if (t && t.dataset.video) {
+      ++turno; verVideo(true);
+      main.querySelectorAll(".thumbs button").forEach(b => b.setAttribute("aria-pressed", b === t));
+    } else if (t) {
       fotoActual = t.dataset.src;
       mostrarFoto();
       main.querySelectorAll(".thumbs button").forEach(b => b.setAttribute("aria-pressed", b === t));
