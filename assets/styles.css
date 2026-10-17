@@ -344,3 +344,64 @@ section{padding:80px 0}
 .gallery .main [hidden]{display:none}
 .thumbs .t-video{position:relative}
 .thumbs .t-video span{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:22px;background:rgba(0,0,0,.35)}
+
+/* Reseñas */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.stars{position:relative;display:inline-block;font-size:16px;letter-spacing:2px;line-height:1;color:#d4c6b2}
+.stars::before{content:"★★★★★";position:absolute;inset:0;width:calc(var(--n) * 20%);overflow:hidden;color:#d69a3c;white-space:nowrap}
+.r-layout{display:grid;grid-template-columns:380px minmax(0,1fr);gap:36px;align-items:start;padding-bottom:80px}
+.r-side{display:grid;gap:18px;position:sticky;top:104px}
+.r-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.r-prom{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.r-prom strong{font-size:44px;font-weight:600;letter-spacing:-.04em;line-height:1}
+.r-prom .stars{font-size:20px}
+.r-prom small{color:var(--muted);font-size:14px;width:100%}
+.r-barras{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:6px;font-size:13px}
+.r-barras li{display:grid;grid-template-columns:34px 1fr 28px;align-items:center;gap:10px;color:var(--muted)}
+.r-barras i{height:8px;border-radius:9px;background:var(--sage);overflow:hidden}
+.r-barras b{display:block;height:100%;background:#d69a3c;border-radius:9px;transition:width .6s}
+.r-barras em{font-style:normal;text-align:right}
+.r-form{display:grid;gap:16px}
+.r-form h2{font-size:24px}
+.r-rate{border:0;margin:0;padding:0}
+.r-rate legend{font-size:14px;font-weight:600;padding:0;margin-bottom:6px}
+.r-stars{display:inline-flex;flex-direction:row-reverse;gap:2px}
+.r-stars input{position:absolute;opacity:0;pointer-events:none}
+.r-stars label{font-size:38px;line-height:1;color:#d4c6b2;cursor:pointer;padding:2px;transition:color .12s,transform .12s;-webkit-tap-highlight-color:transparent}
+.r-stars input:checked~label,.r-stars label:hover,.r-stars label:hover~label{color:#d69a3c}
+.r-stars input:focus-visible+label{outline:2px solid var(--dark);outline-offset:2px;border-radius:6px}
+.r-stars label:active{transform:scale(.9)}
+.r-etq{display:inline-block;margin-left:10px;font-size:14px;color:var(--muted);vertical-align:12px}
+.r-field{display:grid;gap:6px;font-size:14px;font-weight:600;position:relative}
+.r-field small{font-weight:400;color:var(--muted)}
+.r-field input,.r-field textarea{font:inherit;font-size:16px;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;width:100%;resize:vertical}
+.r-field input:focus,.r-field textarea:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.r-cuenta{justify-self:end;font-size:12px}
+.r-trampa{position:absolute;left:-9999px;height:0;width:0;opacity:0}
+.r-form .btn{justify-content:center}
+.r-form .btn:disabled{opacity:.6;cursor:wait}
+.r-form .note{margin:0}
+.r-msg{margin:0;font-size:14px;font-weight:600}
+.r-msg:empty{display:none}
+.r-msg.ok{color:#2f6b45}.r-msg.err{color:#a8473a}
+.r-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.r-toolbar h2{font-size:28px}
+.r-lista,.r-grid{display:grid;gap:14px}
+.resena{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.resena.tuya{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+.resena header{display:flex;align-items:center;gap:12px}
+.resena header div{flex:1;min-width:0}
+.resena header b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.resena header small{color:var(--muted);font-size:13px}
+.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--dark);color:#f5efe4;font-weight:600;flex:none}
+.resena p{margin:12px 0 0;overflow-wrap:anywhere}
+.r-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:30px;align-items:center;margin-bottom:24px}
+.r-top .r-barras{margin:0}
+.r-grid{grid-template-columns:repeat(3,1fr)}
+#resenas-inicio .empty{grid-column:1/-1;padding:24px}
+@media (max-width:900px){
+  .r-layout{grid-template-columns:minmax(0,1fr)}
+  .r-side{position:static}
+  .r-grid{grid-template-columns:1fr}
+  .r-top{grid-template-columns:1fr;gap:16px}
+}

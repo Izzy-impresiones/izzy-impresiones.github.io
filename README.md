@@ -41,3 +41,11 @@ Si una foto es un link de internet, GitHub la copia sola a `img/productos/` (acc
 `assets/recolor.js` detecta el cuerpo del producto en la foto y lo pinta del color elegido, manteniendo sombras y detalles (ojos, cachetes, etc.). Se activa por producto con `"vista_previa": true`.
 
 Funciona bien con productos **de un solo color** sobre **fondo liso y claro**. Si una foto no cumple eso (fotos con ambiente, fondos oscuros), la página muestra la foto original sin pintar. No conviene activarlo en productos de varios colores ni en productos blancos (el cuerpo se confunde con el fondo). Para la mejor vista previa, la primera foto del producto tiene que ser la más limpia.
+
+## Reseñas
+
+`resenas.html` muestra todas las reseñas (1 a 5 estrellas + comentario) y tiene el formulario para dejar una. En el inicio aparece el promedio y las 3 últimas. Las reseñas se guardan en un **Formulario de Google** y se leen de su **planilla de respuestas**.
+
+Para conectarlo se completan los datos de `RESENAS` al principio de `assets/resenas.js` (link del formulario, los códigos `entry.…` de las 3 preguntas y el link de la planilla) y se pone `resenas: true` en `assets/app.js` para mostrar el link en el menú.
+
+Para borrar una reseña (spam, insultos), se borra su fila en la planilla.

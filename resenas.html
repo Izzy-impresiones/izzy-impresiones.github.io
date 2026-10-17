@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reseñas | Izzy Impresiones 3D</title>
+<meta name="description" content="Opiniones de clientes de Izzy Impresiones 3D. Contanos qué te pareció tu pedido y calificanos de 1 a 5 estrellas.">
+<meta name="theme-color" content="#f1e6d6">
+<link rel="icon" href="brand/izzy-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script src="assets/app.js" defer></script>
+<script src="assets/resenas.js" defer></script>
+</head>
+<body data-page="resenas">
+<main id="contenido"><div class="container">
+  <div class="cat-head">
+    <span class="eyebrow">Tu opinión cuenta</span>
+    <h1>Reseñas</h1>
+    <p class="lead">Buenas, malas o regulares: todas se publican. Contanos cómo fue tu experiencia con Izzy.</p>
+  </div>
+
+  <div class="r-layout">
+    <div class="r-side">
+      <div class="r-card" id="r-resumen" aria-live="polite"></div>
+
+      <form class="r-card r-form" id="r-form" novalidate>
+        <h2>Dejá tu reseña</h2>
+        <fieldset class="r-rate">
+          <legend>Tu calificación</legend>
+          <div class="r-stars">
+            <input type="radio" id="e5" name="estrellas" value="5"><label for="e5" title="Excelente"><span class="sr">5 estrellas, Excelente</span>★</label>
+            <input type="radio" id="e4" name="estrellas" value="4"><label for="e4" title="Bueno"><span class="sr">4 estrellas, Bueno</span>★</label>
+            <input type="radio" id="e3" name="estrellas" value="3"><label for="e3" title="Regular"><span class="sr">3 estrellas, Regular</span>★</label>
+            <input type="radio" id="e2" name="estrellas" value="2"><label for="e2" title="Malo"><span class="sr">2 estrellas, Malo</span>★</label>
+            <input type="radio" id="e1" name="estrellas" value="1"><label for="e1" title="Muy malo"><span class="sr">1 estrella, Muy malo</span>★</label>
+          </div>
+          <span class="r-etq" id="r-etiqueta" aria-live="polite"></span>
+        </fieldset>
+        <label class="r-field">Tu nombre
+          <input name="nombre" maxlength="40" autocomplete="given-name" placeholder="Ej: Sofi" required>
+        </label>
+        <label class="r-field">Tu opinión <small>(opcional)</small>
+          <textarea name="comentario" rows="4" maxlength="600" placeholder="¿Qué compraste? ¿Cómo fue la atención, la calidad, la entrega?"></textarea>
+          <small class="r-cuenta" id="r-cuenta">0/600</small>
+        </label>
+        <input class="r-trampa" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" type="submit">Publicar reseña</button>
+        <p class="r-msg" id="r-msg" role="status"></p>
+        <p class="note">Tu reseña se publica tal cual, con tu nombre y la fecha.</p>
+      </form>
+    </div>
+
+    <div>
+      <div class="r-toolbar">
+        <h2>Lo que dicen</h2>
+        <div style="display:flex;gap:8px">
+          <select class="sort" id="r-filtro" aria-label="Filtrar por estrellas">
+            <option value="todas">Todas</option>
+            <option value="5">5 ★</option><option value="4">4 ★</option><option value="3">3 ★</option><option value="2">2 ★</option><option value="1">1 ★</option>
+          </select>
+          <select class="sort" id="r-orden" aria-label="Ordenar reseñas">
+            <option value="recientes">Más recientes</option>
+            <option value="mejores">Mejor puntaje</option>
+            <option value="peores">Peor puntaje</option>
+          </select>
+        </div>
+      </div>
+      <div class="r-lista" id="r-lista"><p class="empty">Cargando reseñas…</p></div>
+    </div>
+  </div>
+</div></main>
+</body>
+</html>

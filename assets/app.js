@@ -2,6 +2,7 @@
 const IZZY = {
   whatsapp: "543794112142",
   instagram: "https://www.instagram.com/izzy.impresiones",
+  resenas: false, // true cuando el formulario de reseñas está conectado (assets/resenas.js)
   diaMadre: { fecha: "2026-10-18", encargarAntes: "jueves 15/10", encargarHasta: "2026-10-15T23:59:59-03:00" },
 };
 
@@ -65,6 +66,7 @@ function montarLayout() {
         <a href="index.html#personalizados">Personalizados</a>
         <a href="index.html#colores">Colores</a>
         <a href="index.html#como-comprar">Cómo comprar</a>
+        ${IZZY.resenas ? `<a href="resenas.html">Reseñas</a>` : ""}
       </nav>
       <div style="display:flex;align-items:center;gap:4px">
         <a class="nav-ig" href="${IZZY.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ICON.ig}</a>
@@ -80,6 +82,7 @@ function montarLayout() {
           <li><a href="index.html#personalizados">Tu idea, en 3D</a></li>
           <li><a href="index.html#colores">Nuestros colores</a></li>
           <li><a href="index.html#como-comprar">Cómo comprar</a></li>
+          ${IZZY.resenas ? `<li><a href="resenas.html">Reseñas</a></li>` : ""}
         </ul></div>
         <div><h4>Sigamos en contacto</h4><ul>
           <li><a href="${IZZY.instagram}" target="_blank" rel="noopener">Instagram</a></li>
