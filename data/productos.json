@@ -716,7 +716,7 @@
     "slug": "soporte-para-celular-regulable",
     "nombre": "Soporte para celular regulable",
     "categoria": "Organización",
-    "precio": null,
+    "precio": 2000,
     "colores": "*",
     "imagenes": [
       "img/productos/soporte-para-celular-regulable-1.jpg",
@@ -731,7 +731,7 @@
     "slug": "mascara-oni",
     "nombre": "Máscara Oni",
     "categoria": "Otros",
-    "precio": null,
+    "precio": 14000,
     "colores": "",
     "imagenes": [
       "img/productos/mascara-oni-1.jpg"
@@ -742,16 +742,31 @@
   },
   {
     "slug": "katana-retractil",
-    "nombre": "Katana retráctil",
+    "nombre": "Katana Samurai retráctil",
     "categoria": "Otros",
-    "precio": null,
-    "colores": "*",
+    "precio": 13000,
+    "colores": [
+      "Negro"
+    ],
     "imagenes": [
       "img/productos/katana-retractil-1.jpg"
     ],
     "video": "img/productos/katana-retractil.mp4",
-    "descripcion": "Katana impresa en 3D que se guarda en el mango y se despliega con un movimiento. Mirá el video para verla en acción ⚔️",
+    "descripcion": "Katana samurái impresa en 3D que se guarda en el mango y se despliega con un movimiento. Mirá el video para verla en acción ⚔️\n\n* Hoja retráctil: se esconde dentro del mango\n* Ideal para cosplay, colección o para jugar\n\nDisponible en negro.",
     "dia_de_la_madre": false,
     "orden": 48
+  },
+  {
+    "slug": "daga-de-toji-lanza-invertida-del-cielo",
+    "nombre": "Daga de Toji · Lanza Invertida del Cielo",
+    "categoria": "Otros",
+    "precio": 21500,
+    "colores": "",
+    "imagenes": [
+      "img/productos/daga-de-toji-lanza-invertida-del-cielo-1.jpg"
+    ],
+    "descripcion": "Réplica de la Lanza Invertida del Cielo (Ama no Sakahoko), el arma de Toji Fushiguro en Jujutsu Kaisen, impresa en 3D.\n\n* Hoja gris con la punta en horquilla, guarda negra y mango rojo\n* Argolla dorada en la punta del mango\n* Ideal para cosplay, colección o para decorar\n\nViene en los colores de la foto.",
+    "dia_de_la_madre": false,
+    "orden": 49
   }
 ]
