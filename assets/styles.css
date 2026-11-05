@@ -405,3 +405,23 @@ section{padding:80px 0}
   .r-grid{grid-template-columns:1fr}
   .r-top{grid-template-columns:1fr;gap:16px}
 }
+
+/* Navidad */
+.mom.xmas{background:linear-gradient(120deg,#a8352f,#7e2424 60%,#2f5a3c);color:#fff;position:relative;overflow:hidden}
+.mom.xmas::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background-image:radial-gradient(circle,#fff 1.2px,transparent 1.6px),radial-gradient(circle,#fff 1px,transparent 1.4px);
+  background-size:46px 46px,29px 29px;background-position:0 0,13px 17px}
+.mom.xmas > *{position:relative;z-index:1}
+.mom.xmas p{color:#f7e6e1}
+.mom.xmas .date{color:#f3d58c}
+.mom.xmas .btn{background:#fff;color:#7e2424}
+.mom.xmas .btn:hover{background:#f7ebe6}
+.xmas .reloj div{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22)}
+.xmas .reloj b{color:#fff}
+.xmas .reloj small{color:#f7e6e1}
+.xmas .reloj .fin{background:none;border:0;text-align:left;align-self:center}
+.xmas .reloj p{color:#fff}
+.badge.xmas-b{background:#a8352f;color:#fff}
+.chip.xmas-chip{border-color:#c46a62}
+.promo.xmas-promo{background:#7e2424}
+@media (max-width:560px){.xmas .reloj{gap:8px}.xmas .reloj div{min-width:0;flex:1;padding:8px 6px}.xmas .reloj b{font-size:22px}.xmas .reloj .fin{flex-basis:100%}}

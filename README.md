@@ -32,6 +32,7 @@ Se edita `data/productos.json`. Cada producto tiene:
 - `"precio": null` muestra "Consultar precio".
 - `"colores": "*"` = todos los colores; o una lista, por ejemplo `["Blanco", "Negro"]`.
 - `"vista_previa": true` activa la vista previa de color: al tocar un color, la foto se pinta de ese color (ver abajo).
+- `"navidad": true` lo muestra en la sección de Navidad (inicio y filtro del catálogo), con la etiqueta 🎄 Navidad. La sección y la cuenta regresiva se configuran en `IZZY.navidad` de `assets/app.js` y desaparecen solas después del 25/12.
 - `orden` más alto = producto más nuevo (los 6 más nuevos salen en el inicio).
 
 Si una foto es un link de internet, GitHub la copia sola a `img/productos/` (acción "Copiar fotos al repositorio").

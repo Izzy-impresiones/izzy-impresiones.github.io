@@ -4,6 +4,8 @@ const IZZY = {
   instagram: "https://www.instagram.com/izzy.impresiones",
   resenas: false, // true cuando el formulario de reseñas está conectado (assets/resenas.js)
   diaMadre: { fecha: "2026-10-18", encargarAntes: "jueves 15/10", encargarHasta: "2026-10-15T23:59:59-03:00" },
+  // Navidad: la sección aparece hasta el 25/12 y la cuenta regresiva llega a la medianoche del 24 al 25
+  navidad: { fecha: "2026-12-25", llega: "2026-12-25T00:00:00-03:00" },
 };
 
 const COLORES = {
@@ -39,6 +41,7 @@ const waProducto = (p, color) =>
 const waGeneral = () => waLink("¡Hola! Quiero consultar por las impresiones 3D de Izzy.");
 const productoURL = p => `producto.html?p=${encodeURIComponent(p.slug)}`;
 const diaMadreActivo = () => new Date() <= new Date(IZZY.diaMadre.fecha + "T23:59:59-03:00");
+const navidadActiva = () => new Date() <= new Date(IZZY.navidad.fecha + "T23:59:59-03:00");
 
 async function cargarProductos() {
   const r = await fetch("data/productos.json", { cache: "no-cache" });
@@ -55,6 +58,8 @@ function marca() {
 function montarLayout() {
   const promo = diaMadreActivo()
     ? `<div class="promo">🎁 Día de la Madre: domingo 18/10. Encargá tu regalo antes del ${IZZY.diaMadre.encargarAntes}. <a href="catalogo.html?cat=dia-de-la-madre">Ver regalos</a></div>`
+    : navidadActiva()
+    ? `<div class="promo xmas-promo">🎄 Navidad en Izzy: decoración y regalos impresos en 3D. Encargá con tiempo. <a href="catalogo.html?cat=navidad">Ver productos navideños</a></div>`
     : "";
   document.body.insertAdjacentHTML("afterbegin", `
     <a class="skip" href="#contenido">Ir al contenido</a>
@@ -102,7 +107,7 @@ function montarLayout() {
 /* ===== Tarjeta de producto ===== */
 function tarjeta(p, i = 0) {
   const cols = coloresDe(p).slice(0, 5).map(c => `<i title="${esc(c)}" style="background:${fondoColor(c)}"></i>`).join("");
-  const badge = p.dia_de_la_madre && diaMadreActivo() ? `<span class="badge mom-b">Día de la Madre</span>` : p.video ? `<span class="badge vid-b">▶ Video</span>` : "";
+  const badge = p.dia_de_la_madre && diaMadreActivo() ? `<span class="badge mom-b">Día de la Madre</span>` : p.navidad && navidadActiva() ? `<span class="badge xmas-b">🎄 Navidad</span>` : p.video ? `<span class="badge vid-b">▶ Video</span>` : "";
   return `<article class="card" style="--i:${i % 8}">
     <a class="photo" href="${productoURL(p)}">${badge}<img src="${esc(p.imagenes[0])}" alt="${esc(p.nombre)}" loading="lazy">${p.imagenes[1] ? `<img class="alt" src="${esc(p.imagenes[1])}" alt="" loading="lazy">` : ""}</a>
     <div class="body">
@@ -229,6 +234,23 @@ function cuentaRegresiva() {
   if (pintar()) { const t = setInterval(() => { if (!pintar()) clearInterval(t); }, 30000); }
 }
 
+// Cuenta regresiva hasta Navidad (con segundos)
+function cuentaNavidad() {
+  const el = $("#reloj-navidad"); if (!el || $("#navidad").hidden) return;
+  const fin = new Date(IZZY.navidad.llega);
+  const pintar = () => {
+    const ms = fin - new Date();
+    if (ms <= 0) { el.innerHTML = `<p>¡Feliz Navidad! 🎄 Gracias por elegirnos.</p>`; return false; }
+    const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60, s = Math.floor(ms / 1e3) % 60;
+    el.innerHTML = [[d, d === 1 ? "día" : "días"], [h, "horas"], [m, "min"], [s, "seg"]]
+      .map(([v, l]) => `<div><b>${String(v).padStart(2, "0")}</b><small>${l}</small></div>`).join("")
+      + `<div class="fin"><small>para Navidad</small></div>`;
+    return true;
+  };
+  el.hidden = false;
+  if (pintar()) { const t = setInterval(() => { if (!pintar()) clearInterval(t); }, 1000); }
+}
+
 // Las tarjetas con más de una foto las van alternando solas (celu y compu)
 const fotos = { io: null, visibles: new Set(), tic: 0 };
 function alternarFotos(raiz = document) {
@@ -269,11 +291,17 @@ async function paginaInicio() {
     $("#dia-madre").hidden = false;
     $("#dia-madre-grid").innerHTML = mom.slice(0, 4).map((p, i) => tarjeta(p, i)).join("");
   }
+  const xmas = [...productos.filter(p => p.navidad)].sort((a, b) => b.orden - a.orden);
+  if (navidadActiva() && xmas.length) {
+    $("#navidad").hidden = false;
+    $("#navidad-grid").innerHTML = xmas.slice(0, 8).map((p, i) => tarjeta(p, i)).join("");
+  }
   $("#ver-todos").textContent = `Ver los ${productos.length} →`;
   impresora();
   probador();
   cinta();
   cuentaRegresiva();
+  cuentaNavidad();
   revelarGrillas();
   alternarFotos();
   document.querySelectorAll("[data-wa]").forEach(a => {
@@ -287,18 +315,20 @@ async function paginaCatalogo() {
   const params = new URLSearchParams(location.search);
   let cat = params.get("cat") || "todos";
   if (cat === "dia-de-la-madre" && !diaMadreActivo()) cat = "todos";
+  if (cat === "navidad" && !navidadActiva()) cat = "todos";
   let orden = "sugerido", q = "";
 
   const chips = [["todos", "Todos"]];
+  if (navidadActiva() && productos.some(p => p.navidad)) chips.push(["navidad", "🎄 Navidad"]);
   if (diaMadreActivo() && productos.some(p => p.dia_de_la_madre)) chips.push(["dia-de-la-madre", "🎁 Día de la Madre"]);
   CATEGORIAS.filter(c => productos.some(p => p.categoria === c)).forEach(c => chips.push([c, c]));
   const cont = $("#chips");
-  cont.innerHTML = chips.map(([v, l]) => `<button class="chip${v === "dia-de-la-madre" ? " mom-chip" : ""}" data-v="${esc(v)}">${esc(l)}</button>`).join("");
+  cont.innerHTML = chips.map(([v, l]) => `<button class="chip${v === "dia-de-la-madre" ? " mom-chip" : v === "navidad" ? " xmas-chip" : ""}" data-v="${esc(v)}">${esc(l)}</button>`).join("");
 
   function render() {
     cont.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === cat));
     let lista = productos.filter(p =>
-      cat === "todos" ? true : cat === "dia-de-la-madre" ? p.dia_de_la_madre : p.categoria === cat);
+      cat === "todos" ? true : cat === "dia-de-la-madre" ? p.dia_de_la_madre : cat === "navidad" ? p.navidad : p.categoria === cat);
     if (q) {
       const t = q.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
       lista = lista.filter(p => (p.nombre + " " + p.categoria).toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").includes(t));

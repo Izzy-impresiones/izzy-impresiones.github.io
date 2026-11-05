@@ -793,7 +793,8 @@
     ],
     "descripcion": "Mini Papá Noel con forma de recipiente: su panza con cinturón dorado es un bowl para llenar con galletitas, caramelos, golosinas o lo que quieras 🎅🍪\n\n* Ideal para la mesa de Navidad o para regalar\n* Botas negras que le sirven de base\n* Detalles en rojo, blanco, negro y dorado\n\nViene en los colores de la foto.",
     "dia_de_la_madre": false,
-    "orden": 51
+    "orden": 51,
+    "navidad": true
   },
   {
     "slug": "esquinero-papa-noel-jo-jo-jo",
@@ -806,7 +807,8 @@
     ],
     "descripcion": "Decoración navideña para esquinas: un gorro de Papá Noel con el clásico \"HO HO HO\" colgando al costado 🎅\n\n* Se coloca en el marco de puertas, ventanas, cuadros o espejos\n* Gorro rojo y blanco con letras rojas\n* Le da un toque navideño a cualquier rincón\n\nViene en los colores de la foto.",
     "dia_de_la_madre": false,
-    "orden": 52
+    "orden": 52,
+    "navidad": true
   },
   {
     "slug": "servilleteros-navidenos",
@@ -819,6 +821,7 @@
     ],
     "descripcion": "Aros para servilletas con diseños navideños: pasás la servilleta por el medio y la mesa de Navidad queda lista y elegante ✨\n\n* Precio por unidad\n* Hay varios modelos (árbol, campana y más): consultanos cuál querés\n* Terminación dorada\n\nIdeales para armar el juego completo de la mesa.",
     "dia_de_la_madre": false,
-    "orden": 53
+    "orden": 53,
+    "navidad": true
   }
 ]
