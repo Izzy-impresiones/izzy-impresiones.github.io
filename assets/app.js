@@ -45,7 +45,11 @@ const navidadActiva = () => new Date() <= new Date(IZZY.navidad.fecha + "T23:59:
 
 async function cargarProductos() {
   const r = await fetch("data/productos.json", { cache: "no-cache" });
-  return r.json();
+  // Los productos con "oculto": true no se muestran en ningún lado
+  const lista = (await r.json()).filter(p => !p.oculto);
+  // Sin productos navideños visibles no se anuncia la Navidad arriba
+  if (!lista.some(p => p.navidad)) document.querySelector(".xmas-promo")?.remove();
+  return lista;
 }
 
 /* ===== Header y footer compartidos ===== */
@@ -315,7 +319,7 @@ async function paginaCatalogo() {
   const params = new URLSearchParams(location.search);
   let cat = params.get("cat") || "todos";
   if (cat === "dia-de-la-madre" && !diaMadreActivo()) cat = "todos";
-  if (cat === "navidad" && !navidadActiva()) cat = "todos";
+  if (cat === "navidad" && (!navidadActiva() || !productos.some(p => p.navidad))) cat = "todos";
   let orden = "sugerido", q = "";
 
   const chips = [["todos", "Todos"]];

@@ -33,6 +33,7 @@ Se edita `data/productos.json`. Cada producto tiene:
 - `"colores": "*"` = todos los colores; o una lista, por ejemplo `["Blanco", "Negro"]`.
 - `"vista_previa": true` activa la vista previa de color: al tocar un color, la foto se pinta de ese color (ver abajo).
 - `"navidad": true` lo muestra en la sección de Navidad (inicio y filtro del catálogo), con la etiqueta 🎄 Navidad. La sección y la cuenta regresiva se configuran en `IZZY.navidad` de `assets/app.js` y desaparecen solas después del 25/12.
+- `"oculto": true` lo esconde de toda la página (sirve para cargarlo antes y mostrarlo cuando esté listo).
 - `orden` más alto = producto más nuevo (los 6 más nuevos salen en el inicio).
 
 Si una foto es un link de internet, GitHub la copia sola a `img/productos/` (acción "Copiar fotos al repositorio").
@@ -50,3 +51,7 @@ Funciona bien con productos **de un solo color** sobre **fondo liso y claro**. S
 Para conectarlo se completan los datos de `RESENAS` al principio de `assets/resenas.js` (link del formulario, los códigos `entry.…` de las 3 preguntas y el link de la planilla) y se pone `resenas: true` en `assets/app.js` para mostrar el link en el menú.
 
 Para borrar una reseña (spam, insultos), se borra su fila en la planilla.
+
+## Cambios que no se ven en el celu
+
+Los archivos `assets/*.js` y `assets/*.css` se cargan con `?v=fecha` en los `.html`. Cuando se cambian, hay que actualizar ese número para que los celulares no sigan usando la versión vieja guardada.
