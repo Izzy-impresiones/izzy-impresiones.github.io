@@ -768,5 +768,57 @@
     "descripcion": "Réplica de la Lanza Invertida del Cielo (Ama no Sakahoko), el arma de Toji Fushiguro en Jujutsu Kaisen, impresa en 3D.\n\n* Hoja gris con la punta en horquilla, guarda negra y mango rojo\n* Argolla dorada en la punta del mango\n* Ideal para cosplay, colección o para decorar\n\nViene en los colores de la foto.",
     "dia_de_la_madre": false,
     "orden": 49
+  },
+  {
+    "slug": "llavero-snoopy",
+    "nombre": "Llavero Snoopy",
+    "categoria": "Llaveros",
+    "precio": 3000,
+    "colores": "",
+    "imagenes": [
+      "img/productos/llavero-snoopy-1.webp"
+    ],
+    "descripcion": "Llavero de Snoopy sentado, con sus orejas negras y su collar rojo, impreso en 3D. Ideal para las llaves, la mochila o para regalar a un fan del personaje 🐶\n\n* Viene con argolla de metal\n* Detalles en blanco, negro y rojo\n\nViene en los colores de la foto.",
+    "dia_de_la_madre": false,
+    "orden": 50
+  },
+  {
+    "slug": "recipiente-papa-noel",
+    "nombre": "Recipiente Papá Noel",
+    "categoria": "Decoración",
+    "precio": 10000,
+    "colores": "",
+    "imagenes": [
+      "img/productos/recipiente-papa-noel-1.webp"
+    ],
+    "descripcion": "Mini Papá Noel con forma de recipiente: su panza con cinturón dorado es un bowl para llenar con galletitas, caramelos, golosinas o lo que quieras 🎅🍪\n\n* Ideal para la mesa de Navidad o para regalar\n* Botas negras que le sirven de base\n* Detalles en rojo, blanco, negro y dorado\n\nViene en los colores de la foto.",
+    "dia_de_la_madre": false,
+    "orden": 51
+  },
+  {
+    "slug": "esquinero-papa-noel-jo-jo-jo",
+    "nombre": "Esquinero Papá Noel \"Ho Ho Ho\"",
+    "categoria": "Decoración",
+    "precio": 7000,
+    "colores": "",
+    "imagenes": [
+      "img/productos/esquinero-papa-noel-jo-jo-jo-1.webp"
+    ],
+    "descripcion": "Decoración navideña para esquinas: un gorro de Papá Noel con el clásico \"HO HO HO\" colgando al costado 🎅\n\n* Se coloca en el marco de puertas, ventanas, cuadros o espejos\n* Gorro rojo y blanco con letras rojas\n* Le da un toque navideño a cualquier rincón\n\nViene en los colores de la foto.",
+    "dia_de_la_madre": false,
+    "orden": 52
+  },
+  {
+    "slug": "servilleteros-navidenos",
+    "nombre": "Servilleteros navideños",
+    "categoria": "Decoración",
+    "precio": 1000,
+    "colores": "",
+    "imagenes": [
+      "img/productos/servilleteros-navidenos-1.webp"
+    ],
+    "descripcion": "Aros para servilletas con diseños navideños: pasás la servilleta por el medio y la mesa de Navidad queda lista y elegante ✨\n\n* Precio por unidad\n* Hay varios modelos (árbol, campana y más): consultanos cuál querés\n* Terminación dorada\n\nIdeales para armar el juego completo de la mesa.",
+    "dia_de_la_madre": false,
+    "orden": 53
   }
 ]
