@@ -778,10 +778,9 @@
     "imagenes": [
       "img/productos/llavero-snoopy-1.webp"
     ],
-    "descripcion": "Llavero de Snoopy sentado, con sus orejas negras y su collar rojo, impreso en 3D. Ideal para las llaves, la mochila o para regalar a un fan del personaje 🐶\n\n* Viene con argolla de metal\n* Detalles en blanco, negro y rojo\n\nViene en los colores de la foto.",
+    "descripcion": "Llavero de Snoopy sentado, con orejas negras, collar rojo y argolla metálica. Un detalle tierno para las llaves o la mochila 🐶",
     "dia_de_la_madre": false,
-    "orden": 50,
-    "oculto": true
+    "orden": 50
   },
   {
     "slug": "recipiente-papa-noel",
@@ -792,11 +791,10 @@
     "imagenes": [
       "img/productos/recipiente-papa-noel-1.webp"
     ],
-    "descripcion": "Mini Papá Noel con forma de recipiente: su panza con cinturón dorado es un bowl para llenar con galletitas, caramelos, golosinas o lo que quieras 🎅🍪\n\n* Ideal para la mesa de Navidad o para regalar\n* Botas negras que le sirven de base\n* Detalles en rojo, blanco, negro y dorado\n\nViene en los colores de la foto.",
+    "descripcion": "Recipiente navideño con diseño de Papá Noel, cinturón dorado y botas negras. Ideal para golosinas o decorar la mesa 🎅",
     "dia_de_la_madre": false,
     "orden": 51,
-    "navidad": true,
-    "oculto": true
+    "navidad": true
   },
   {
     "slug": "esquinero-papa-noel-jo-jo-jo",
@@ -807,11 +805,10 @@
     "imagenes": [
       "img/productos/esquinero-papa-noel-jo-jo-jo-1.webp"
     ],
-    "descripcion": "Decoración navideña para esquinas: un gorro de Papá Noel con el clásico \"HO HO HO\" colgando al costado 🎅\n\n* Se coloca en el marco de puertas, ventanas, cuadros o espejos\n* Gorro rojo y blanco con letras rojas\n* Le da un toque navideño a cualquier rincón\n\nViene en los colores de la foto.",
+    "descripcion": "Esquinero navideño con gorro de Papá Noel y letras HO HO HO. Decorá marcos, puertas y ventanas 🎄",
     "dia_de_la_madre": false,
     "orden": 52,
-    "navidad": true,
-    "oculto": true
+    "navidad": true
   },
   {
     "slug": "servilleteros-navidenos",
@@ -822,10 +819,22 @@
     "imagenes": [
       "img/productos/servilleteros-navidenos-1.webp"
     ],
-    "descripcion": "Aros para servilletas con diseños navideños: pasás la servilleta por el medio y la mesa de Navidad queda lista y elegante ✨\n\n* Precio por unidad\n* Hay varios modelos (árbol, campana y más): consultanos cuál querés\n* Terminación dorada\n\nIdeales para armar el juego completo de la mesa.",
+    "descripcion": "Servilleteros dorados con diseños de arbolito y campana. Un toque especial para la mesa de Navidad. Precio por unidad ✨",
     "dia_de_la_madre": false,
     "orden": 53,
-    "navidad": true,
-    "oculto": true
+    "navidad": true
+  },
+  {
+    "slug": "papelera-canasta-de-basquet",
+    "nombre": "Papelera canasta de básquet",
+    "categoria": "Organización",
+    "precio": null,
+    "colores": [],
+    "imagenes": [
+      "img/productos/papelera-canasta-de-basquet-1.webp"
+    ],
+    "descripcion": "Papelera de escritorio con forma de aro de básquet, borde naranja y red blanca. ¡Tirá los papelitos como si fueran triples! 🏀",
+    "dia_de_la_madre": false,
+    "orden": 54
   }
 ]
