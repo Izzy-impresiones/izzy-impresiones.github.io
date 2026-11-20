@@ -836,5 +836,33 @@
     "descripcion": "Papelera de escritorio con forma de aro de básquet, borde naranja y red blanca. ¡Tirá los papelitos como si fueran triples! 🏀",
     "dia_de_la_madre": false,
     "orden": 54
+  },
+  {
+    "slug": "pesebre-chico",
+    "nombre": "Pesebre chico",
+    "categoria": "Decoración",
+    "precio": 12000,
+    "colores": [],
+    "imagenes": [
+      "img/productos/pesebre-chico.webp"
+    ],
+    "descripcion": "Pesebre navideño pequeño impreso en 3D. Representa a María, José y el Niño Jesús bajo un arco con una estrella en la parte superior. Ideal para decorar un rincón de tu casa esta Navidad. ✨",
+    "dia_de_la_madre": false,
+    "navidad": true,
+    "orden": 55
+  },
+  {
+    "slug": "pesebre-grande",
+    "nombre": "Pesebre grande",
+    "categoria": "Decoración",
+    "precio": 14000,
+    "colores": [],
+    "imagenes": [
+      "img/productos/pesebre-grande.webp"
+    ],
+    "descripcion": "Pesebre navideño grande impreso en 3D, con María, José, el Niño Jesús, los Reyes Magos y animales bajo un arco texturizado con estrella. Una pieza decorativa especial para estas fiestas. ✨",
+    "dia_de_la_madre": false,
+    "navidad": true,
+    "orden": 56
   }
 ]
