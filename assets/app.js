@@ -63,7 +63,7 @@ function montarLayout() {
   const promo = diaMadreActivo()
     ? `<div class="promo">🎁 Día de la Madre: domingo 18/10. Encargá tu regalo antes del ${IZZY.diaMadre.encargarAntes}. <a href="catalogo.html?cat=dia-de-la-madre">Ver regalos</a></div>`
     : navidadActiva()
-    ? `<div class="promo xmas-promo">🎄 Navidad en Izzy: decoración y regalos impresos en 3D. Encargá con tiempo. <a href="catalogo.html?cat=navidad">Ver productos navideños</a></div>`
+    ? `<div class="promo xmas-promo">🎄 Navidad en Izzy: decoración y regalos impresos en 3D. Encargá con tiempo. <a href="combo-navidad.html">Armá tu combo navideño</a> · <a href="catalogo.html?cat=navidad">Ver productos</a></div>`
     : "";
   document.body.insertAdjacentHTML("afterbegin", `
     <a class="skip" href="#contenido">Ir al contenido</a>
@@ -72,6 +72,7 @@ function montarLayout() {
       ${marca()}
       <nav class="nav-links" id="menu">
         <a href="catalogo.html">Catálogo</a>
+        ${navidadActiva() ? `<a href="combo-navidad.html">🎄 Armá tu combo</a>` : ""}
         <a href="index.html#personalizados">Personalizados</a>
         <a href="index.html#colores">Colores</a>
         <a href="index.html#como-comprar">Cómo comprar</a>
