@@ -12,7 +12,9 @@
     { id: "galletita", nombre: "Galletita", precio: 4000, emoji: "🍪" },
     { id: "perrito", nombre: "Perrito", precio: 3600, emoji: "🐶" },
     { id: "gatito", nombre: "Gatito", precio: 4800, emoji: "🐱" },
-    { id: "jesus", nombre: "Jesús", precio: 4800, emoji: "✨" }
+    { id: "jesus", nombre: "Jesús", precio: 4800, emoji: "✨" },
+    { id: "pesebre-chico", nombre: "Pesebre chico", precio: 12000, emoji: "⭐" },
+    { id: "pesebre-grande", nombre: "Pesebre grande", precio: 14000, emoji: "⭐" }
   ];
   const EJEMPLO_TRADICIONAL = { bandeja: 1, arbolito: 1, "papa-noel": 1, "mama-noel": 1 };
   const DESCUENTO = 0.10;
@@ -26,7 +28,9 @@
     galletita: "img/combos/galletita.webp",
     perrito: "img/combos/perrito.webp",
     gatito: "img/combos/gatito.webp",
-    jesus: "img/combos/jesus.webp"
+    jesus: "img/combos/jesus.webp",
+    "pesebre-chico": "img/productos/pesebre-chico.webp",
+    "pesebre-grande": "img/productos/pesebre-grande.webp"
   };
   const ilustracion = a => a.id === "bandeja"
     ? '<span class="combo-tray" aria-hidden="true"></span>'
