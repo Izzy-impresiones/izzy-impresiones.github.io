@@ -19,8 +19,14 @@
   const moneda = n => "$ " + n.toLocaleString("es-AR");
   const FOTOS = {
     arbolito: "img/combos/arbolito.webp",
+    "papa-noel": "img/combos/papa-noel.webp",
+    "mama-noel": "img/combos/mama-noel.webp",
+    nieve: "img/combos/muneco-nieve.webp",
     reno: "img/combos/reno.webp",
-    nieve: "img/combos/muneco-nieve.webp"
+    galletita: "img/combos/galletita.webp",
+    perrito: "img/combos/perrito.webp",
+    gatito: "img/combos/gatito.webp",
+    jesus: "img/combos/jesus.webp"
   };
   const ilustracion = a => a.id === "bandeja"
     ? '<span class="combo-tray" aria-hidden="true"></span>'
