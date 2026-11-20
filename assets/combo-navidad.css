@@ -68,3 +68,11 @@
   .combo-counter output{min-width:22px}
   .combo-price-top strong{font-size:26px}
 }
+
+
+/* Fotografías reales de las primeras piezas tejidas */
+.combo-figure{position:relative;display:block;width:100%;height:100%;overflow:hidden;border-radius:8px;background:#e5e6e0}
+.combo-figure .combo-emoji{position:absolute;inset:0;display:grid;place-items:center;font-size:27px}
+.combo-figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.combo-choice-art .combo-figure{width:39px;height:39px}
+.combo-selected-art .combo-figure{width:38px;height:38px}
