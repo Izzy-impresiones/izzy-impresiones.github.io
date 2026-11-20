@@ -330,6 +330,8 @@ async function paginaCatalogo() {
   cont.innerHTML = chips.map(([v, l]) => `<button class="chip${v === "dia-de-la-madre" ? " mom-chip" : v === "navidad" ? " xmas-chip" : ""}" data-v="${esc(v)}">${esc(l)}</button>`).join("");
 
   function render() {
+    const armador = $("#combo-navidad-catalogo");
+    if (armador) armador.hidden = cat !== "navidad" || !!q;
     cont.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === cat));
     let lista = productos.filter(p =>
       cat === "todos" ? true : cat === "dia-de-la-madre" ? p.dia_de_la_madre : cat === "navidad" ? p.navidad : p.categoria === cat);
