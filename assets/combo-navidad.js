@@ -17,9 +17,17 @@
   const EJEMPLO_TRADICIONAL = { bandeja: 1, arbolito: 1, "papa-noel": 1, "mama-noel": 1 };
   const DESCUENTO = 0.10;
   const moneda = n => "$ " + n.toLocaleString("es-AR");
+  const FOTOS = {
+    arbolito: "img/combos/arbolito.webp",
+    reno: "img/combos/reno.webp",
+    nieve: "img/combos/muneco-nieve.webp"
+  };
   const ilustracion = a => a.id === "bandeja"
     ? '<span class="combo-tray" aria-hidden="true"></span>'
-    : '<span aria-hidden="true">' + a.emoji + '</span>';
+    : FOTOS[a.id]
+      ? '<span class="combo-figure"><span class="combo-emoji" aria-hidden="true">' + a.emoji +
+        '</span><img src="' + FOTOS[a.id] + '" alt="" loading="lazy" decoding="async" onerror="this.remove()"></span>'
+      : '<span aria-hidden="true">' + a.emoji + '</span>';
 
   function iniciar() {
     document.querySelectorAll("[data-armador-navidad]").forEach(destino => {
@@ -28,7 +36,7 @@
       destino.innerHTML = [
         '<div class="combo-builder">',
           '<div class="combo-intro">',
-            '<span class="combo-eyebrow">🎄 ESPECIAL NAVIDAD · IZ ZY IMPRESIONES 3D</span>',
+            '<span class="combo-eyebrow">🎄 ESPECIAL NAVIDAD · IZZY IMPRESIONES 3D</span>',
             '<h3>Una Navidad<br><em>a tu manera.</em></h3>',
             '<p>Armá tu combo como más te guste: elegí las piezas que quieras, repetí tus favoritas y agregá tantas como necesites. No hay figuras obligatorias.</p>',
             '<div class="combo-selection-head"><span>TU COMBO</span><span data-items-count>4 piezas</span></div>',
@@ -61,7 +69,7 @@
             '<p class="combo-confirm">Pedido sujeto a disponibilidad · Hecho en Corrientes Capital</p>',
           '</div>',
         '</div>'
-      ].join("").replace("IZ ZY", "IZZY");
+      ].join("");
 
       function actualizar() {
         const elegidos = ARTICULOS.filter(a => cantidades[a.id] > 0);
