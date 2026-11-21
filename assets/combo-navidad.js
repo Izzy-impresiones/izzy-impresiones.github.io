@@ -21,6 +21,7 @@
   const descuentoDe = piezas => piezas >= 4 ? 0.10 : piezas >= 3 ? 0.05 : 0;
   const moneda = n => "$ " + n.toLocaleString("es-AR");
   const FOTOS = {
+    bandeja: "img/combos/bandeja.webp",
     arbolito: "img/combos/arbolito.webp",
     "papa-noel": "img/combos/papa-noel.webp",
     "mama-noel": "img/combos/mama-noel.webp",
@@ -33,10 +34,8 @@
     "pesebre-chico": "img/productos/pesebre-chico.webp",
     "pesebre-grande": "img/productos/pesebre-grande.webp"
   };
-  const ilustracion = a => a.id === "bandeja"
-    ? '<span class="combo-tray" aria-hidden="true"></span>'
-    : FOTOS[a.id]
-      ? '<span class="combo-figure"><span class="combo-emoji" aria-hidden="true">' + a.emoji +
+  const ilustracion = a => FOTOS[a.id]
+      ? '<span class="combo-figure' + (a.id === "bandeja" ? " combo-figure-tray" : "") + '"><span class="combo-emoji" aria-hidden="true">' + a.emoji +
         '</span><img src="' + FOTOS[a.id] + '" alt="" loading="lazy" decoding="async" onerror="this.remove()"></span>'
       : '<span aria-hidden="true">' + a.emoji + '</span>';
 

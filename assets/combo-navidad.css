@@ -83,3 +83,7 @@
 .combo-selected-art{width:48px;height:48px}
 .combo-selected-art .combo-figure{width:48px;height:48px}
 @media(max-width:560px){.combo-choice-art{width:60px;height:62px}.combo-choice-art .combo-figure{width:60px;height:62px}}
+
+/* Bandeja real sobre blanco, sin recortar el contorno largo de la pieza */
+.combo-figure-tray{background:#fff}
+.combo-figure-tray img{object-fit:contain;padding:3px}
