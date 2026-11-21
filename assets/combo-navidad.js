@@ -17,7 +17,8 @@
     { id: "pesebre-grande", nombre: "Pesebre grande", precio: 14000, emoji: "⭐" }
   ];
   const EJEMPLO_TRADICIONAL = { bandeja: 1, arbolito: 1, "papa-noel": 1, "mama-noel": 1 };
-  const DESCUENTO = 0.10;
+  // Descuentos por cantidad total de unidades, incluso si son repetidas.
+  const descuentoDe = piezas => piezas >= 4 ? 0.10 : piezas >= 3 ? 0.05 : 0;
   const moneda = n => "$ " + n.toLocaleString("es-AR");
   const FOTOS = {
     arbolito: "img/combos/arbolito.webp",
@@ -55,7 +56,7 @@
               '<button type="button" data-reiniciar>Restaurar ejemplo</button></div>',
           '</div>',
           '<div class="combo-config">',
-            '<div class="combo-config-header"><span class="combo-kicker">ELEGÍ TUS PIEZAS</span><span class="combo-discount">10% OFF desde 2 piezas</span></div>',
+            '<div class="combo-config-header"><span class="combo-kicker">ELEGÍ TUS PIEZAS</span><span class="combo-discount">5% OFF desde 3 · 10% OFF desde 4</span></div>',
             '<p class="combo-includes">Sumá o quitá cualquier producto. Podés elegir varias unidades del mismo diseño.</p>',
             '<div class="combo-options" role="group" aria-label="Elegí las cantidades de cada producto">',
               ...ARTICULOS.map(a =>
@@ -85,8 +86,9 @@
         const elegidos = ARTICULOS.filter(a => cantidades[a.id] > 0);
         const piezas = elegidos.reduce((acc, a) => acc + cantidades[a.id], 0);
         const total = elegidos.reduce((acc, a) => acc + a.precio * cantidades[a.id], 0);
-        const aplicaDescuento = piezas >= 2;
-        const final = aplicaDescuento ? Math.round(total * (1 - DESCUENTO) / 100) * 100 : total;
+        const descuento = descuentoDe(piezas);
+        const aplicaDescuento = descuento > 0;
+        const final = Math.round(total * (1 - descuento));
         const ahorro = total - final;
 
         ARTICULOS.forEach(a => {
@@ -110,8 +112,9 @@
         destino.querySelector("[data-ahorro]").textContent = ahorro ? "Ahorrás " + moneda(ahorro) : "";
         destino.querySelector("[data-regla]").textContent = piezas === 0
           ? "Agregá al menos una pieza para hacer un pedido."
-          : piezas === 1 ? "Sumá otra pieza para activar el descuento del 10%."
-          : "Descuento del 10% aplicado a tu combo.";
+          : piezas < 3 ? "Con 3 piezas obtenés 5% OFF y con 4 o más, 10% OFF."
+          : piezas === 3 ? "¡5% OFF aplicado! Sumá una pieza más para tener 10% OFF."
+          : "¡10% OFF aplicado a tu combo!";
 
         const boton = destino.querySelector("[data-pedir]");
         boton.classList.toggle("combo-disabled", piezas === 0);
@@ -124,7 +127,7 @@
             "Estas son las piezas que elegí (" + piezas + " en total):",
             ...elegidos.map(a => "• " + cantidades[a.id] + " × " + a.nombre),
             "",
-            "Total calculado: " + moneda(final) + " ARS" + (aplicaDescuento ? " (con 10% de descuento)." : "."),
+            "Total calculado: " + moneda(final) + " ARS" + (aplicaDescuento ? " (con " + Math.round(descuento * 100) + "% de descuento)." : "."),
             "¿Me confirmás disponibilidad y coordinamos el pedido?"
           ].join("\n");
           boton.href = "https://wa.me/" + IZZY.whatsapp + "?text=" + encodeURIComponent(mensaje);
